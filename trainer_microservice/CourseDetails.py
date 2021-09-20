@@ -54,7 +54,7 @@ class CourseDetails(db.Model):
 
 
 # GET ALL course details
-@app.route("/course_details")
+@app.route("/course_details" , methods = ['GET'])
 def get_all():
     course_details_list = CourseDetails.query.all()
     if len(course_details_list):
@@ -92,7 +92,7 @@ def find_by_course_id(course_id):
     ), 404
 
 # CREATE COURSE
-@app.route("/course_details/<string:engineer_id>", methods=['POST'])
+@app.route("/course_details/<string:course_id>", methods=['POST'])
 def create_course(course_id):
     if (CourseDetails.query.filter_by(course_id=course_id).first()):
         return jsonify(
@@ -109,7 +109,7 @@ def create_course(course_id):
     course_details = CourseDetails(course_id, **data)
 
     try:
-        db.session.add(course_id)
+        db.session.add(course_details)
         db.session.commit()
     except:
         return jsonify(
@@ -130,7 +130,7 @@ def create_course(course_id):
     ), 201
 
 # DELETE COURSE BY ID
-@app.route("/course_details/<string:engineer_id>", methods=['DELETE'])
+@app.route("/course_details/<string:course_id>", methods=['DELETE'])
 def delete_course(course_id):
     course_detail = CourseDetails.query.filter_by(course_id = course_id).first()
     if course_detail:
