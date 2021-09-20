@@ -19,10 +19,10 @@ class Engineers(db.Model):
     engineer_name = db.Column(db.String(64))
     engineer_teleid = db.Column(db.String(20))
     engineer_email = db.Column(db.String(20))
-    engineer_completedCourses = db.Column(db.String)
-    engineer_enrolledCourses = db.Column(db.String)
-    engineer_assignedCourses = db.Column(db.String)
-    engineer_signedupCourses = db.Column(db.String)
+    engineer_completedCourses = db.Column(db.Integer)
+    engineer_enrolledCourses = db.Column(db.Integer)
+    engineer_assignedCourses = db.Column(db.Integer)
+    engineer_signedupCourses = db.Column(db.Integer)
 
     def __init__(self, engineer_id, engineer_pwd, engineer_name, engineer_teleid, engineer_email, engineer_completedCourses, engineer_enrolledCourses, engineer_assignedCourses, engineer_signedupCourses):
         self.engineer_id = engineer_id
