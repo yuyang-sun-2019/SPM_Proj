@@ -322,4 +322,3 @@ ALTER TABLE `trainers`
 
 ALTER TABLE `hr`
   ADD CONSTRAINT `hr_ibfk_1` FOREIGN KEY (`hr_id`) REFERENCES `person` (`id`);
-
