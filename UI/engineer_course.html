@@ -76,7 +76,7 @@
         <tbody>
             <tr v-for="record in course_list">
                 <td><strong>{{ record.course_id }}</strong></td>
-                <td><a v-bind:href="'./course_content.html/'+ record.course_id">{{ record.course_name }}</a></td>
+                <td><a v-bind:href="'./course_content.html?id='+ record.course_id">{{ record.course_name }}</a></td>
                 <td>{{ record.course_type }}</td>
                 <td>{{ record.total_slots_available }}</td>
             </tr>
