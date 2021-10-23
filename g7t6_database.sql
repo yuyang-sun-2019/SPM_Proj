@@ -99,7 +99,6 @@ INSERT INTO `trainers` (`trainer_id`,`trainer_teleid`, `trainer_course_section_i
 
 
 
-
 -- --------------------------------------------------------
 -- -----------------------------------------------------
 -- Table `hr`
@@ -118,6 +117,7 @@ INSERT INTO `hr` (`hr_id`,`courses_assigned`) VALUES
 (367, 'E201, E202, E203, E204, E205'),
 (368, 'E206, E207, E208, E209, E210'),
 (369, 'E301, E302, E303, E304, E305');
+
 
 
 
@@ -193,6 +193,22 @@ INSERT INTO `course_details` (`course_id`,`course_name`,`course_type`, `course_p
 ('E305', 'Event Management & Operations', 'Biddable', NULL, 'This is a biddable course, please refer to OASIS for more information', 120, 'Term2', 'E30G1, E304G2, E304G3', NULL);
 
 
+
+-- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Enrollment's Table
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `enrollment` (
+
+  `enrollment_id` INT(20) NOT NULL UNIQUE AUTO_INCREMENT,
+  `engineer_id` INT(20) DEFAULT NULL,
+  `course_id` VARCHAR(20) DEFAULT NULL ,
+
+  PRIMARY KEY (`enrollment_id`))
+
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- --------------------------------------------------------
@@ -310,21 +326,6 @@ ADD CONSTRAINT `fk_tanswer_answer`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
--- --------------------------------------------------------
--- -----------------------------------------------------
--- Enrollment's Table
--- -----------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS `enrollment` (
-
-  `enrollment_id` INT(20) NOT NULL UNIQUE,
-  `engineer_id` INT(20) DEFAULT NULL,
-  `course_id` INT(20) DEFAULT NULL,
-
-  PRIMARY KEY (`enrollment_id`))
-
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- --------------------------------------------------------
