@@ -105,17 +105,19 @@ INSERT INTO `trainers` (`trainer_id`,`trainer_teleid`, `trainer_course_section_i
 -- Table `hr`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hr` (
-    `hr_id` INT NOT NULL UNIQUE,
-    PRIMARY KEY (`hr_id`))
+  `hr_id` INT NOT NULL UNIQUE,
+  `courses_assigned` varchar(400) NOT NULL,
 
+  PRIMARY KEY (`hr_id`))
+  
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `hr` (`hr_id`) VALUES
-(366),
-(367),
-(368),
-(369);
+INSERT INTO `hr` (`hr_id`,`courses_assigned`) VALUES
+(366, 'E101, E102, E103, E104, E105'),
+(367, 'E201, E202, E203, E204, E205'),
+(368, 'E206, E207, E208, E209, E210'),
+(369, 'E301, E302, E303, E304, E305');
 
 
 
