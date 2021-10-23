@@ -308,6 +308,21 @@ ADD CONSTRAINT `fk_tanswer_answer`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
+-- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Enrollment's Table
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `enrollment` (
+
+  `enrollment_id` INT(20) NOT NULL UNIQUE,
+  `engineer_id` INT(20) DEFAULT NULL,
+  `course_id` INT(20) DEFAULT NULL,
+
+  PRIMARY KEY (`enrollment_id`))
+
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- --------------------------------------------------------
