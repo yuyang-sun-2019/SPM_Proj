@@ -85,7 +85,7 @@
     </h5>
     <br>
 
-    <table id="consultationsTable" class='table table-striped' border='2'>
+    <table class='table table-striped' border='2'>
         <thead class='thead-dark'>
             <tr>
                 <th>Course ID</th>
@@ -106,10 +106,29 @@
             </tr>
         </tbody>
     </table>
-    <button type="button" class="btn btn-dark" style="align-items: center;">Enroll</button>
+  
+    <table class='table table-striped' border='2' >
+      <thead class='thead-dark'>
+        <th>Prerequisite Courses</th>
+        <th>Prerequisite Courses Completed?</th>
+        <th>Prerequisite Course Completed Image</th>
+      </thead>
+      
+      <tr v-for="record in prereq_list">
+        <td>{{record}}</td>
+        <td><course-comp :id="record"></course-comp></td>
+        <td id="getImage"></td>
+      </tr>
+    </table>
+
   </div>
 
-  
+  <br>
+
+  <div id="enroll">
+    <input type="button" style= "margin:0 auto;
+    display:block; padding: 10px 20px;" class="btn btn-dark" value="Enroll" id="submit1" @click="enroll()"/>
+  </div>
 
 
   <script>
@@ -123,22 +142,111 @@
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
 
+
     var course_id = getParameterByName('id');
+    var engineer_id = sessionStorage.getItem("user_id");
+    var engcompleted_courses = []
+    var completed_preq = []
+    var prequisite_course = []
+    var course_avail = 0
+    var course_type = ''
+
 
     const vm = new Vue({
           el: '#course_descr',
           data: {
-              course_list: []
+              course_list: [],
+              prereq_list: [],
+              completed_courses: [],
           },
           mounted: function() {
               axios.get('http://localhost:5001/course/'+course_id)
                   .then(response => {
                       this.course_list = response.data;
-                      console.log(course_list)
+                      course_avail = response.data.data['total_slots_available']
+                      course_type = response.data.data['course_type']
+                      if(response.data.data['course_prerequisite'] != null){
+                        this.prereq_list = response.data.data['course_prerequisite'].split(",");
+                        prequisite_course = this.prereq_list
+                      }
                   })
                   .catch(error => alert(error));
-          }
+          },
       });
+  
+
+
+
+  Vue.component('course-comp', {
+    props: ['id'],
+    template: `<h6>{{output}}</h6>`,
+    data: function () {
+        return {
+            completed_courses: [],
+            output: "No",
+            image: "",
+        };
+    },
+    created: function () {
+        // console.log(this.id)
+        axios.get('http://localhost:5002/engineer/'+engineer_id)
+            .then(response => {
+              this.completed_courses = response.data.data['engineer_completed_coursesid'].split(',');
+              engcompleted_courses = this.completed_courses
+              for(i=0; i < this.completed_courses.length; i++){
+                if(this.completed_courses[i] == this.id){
+                  // alert('Its a MATCH!');
+                  this.output = "Yes"
+                  this.image = "<img src ='./badge2.jpg' width='70' height='70'>"
+                  var body_str = `${this.image}`
+                  //console.log(body_str)
+                  var body_content = document.getElementById('getImage');
+                  body_content.innerHTML = body_str;
+                  completed_preq.push(this.id)
+                }
+              }
+            }); 
+    },
+  });
+
+
+
+  const enroll = new Vue({
+    el: '#enroll',
+    data: {
+      course_id:course_id,
+      engineer_id: engineer_id,
+    },
+    methods:{
+      enroll: function() {
+        if(course_id in engcompleted_courses){
+          alert('You have already completed this Course')
+        }
+        if(course_type == 'Assigned'){
+          alert('This course is Assigned. You cannot Enrol for this course.')
+        }
+        else{
+          if(completed_preq.length == prequisite_course.length && course_avail>0){
+          axios.post('http://localhost:5003/enrollment', {
+            course_id: this.course_id,
+            engineer_id: this.engineer_id,
+          })
+          .then(response => {
+              alert('Success!')
+              return false;
+          })
+          }
+          else {
+            alert('You have not completed all the Prerequisites!')
+          }
+        }
+        
+      }
+    }
+  });
+
+  
+
   </script>
   
 </body>
