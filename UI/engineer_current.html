@@ -73,12 +73,10 @@
 <div class="container" id='app'>
   <div>
   <div class="panel panel-default" v-for="record in course_list">
-    <p><course-comp :id="record.trimLeft('%20')"> </course-comp></p>
+    <p><course-comp :id="record"> </course-comp></p>
   </div>
   </div>
 </div>
-
-
 
 
 
@@ -95,7 +93,7 @@
         mounted: function() {
           axios.get('http://localhost:5002/engineer/'+engineer_id)
                 .then(response => {
-                    this.course_list = response.data.data['engineer_inprogress_coursesid'].split(',');
+                    this.course_list = response.data.data['engineer_inprogress_courses'].split(', ');
                     console.log(this.course_list)
                 })
                 .catch(error => alert(error));
@@ -104,7 +102,7 @@
   
     Vue.component('course-comp', {
     props: ['id'],
-    template: `<div class="panel-heading"><h3>{{course_id}}  -  {{course_name}}</h3>
+    template: `<div class="panel-heading"><h3><a v-bind:href="'./course_lesson.html?id='+ this.course_class_id">{{course_id}}  -  {{course_name}}</a></h3>
       <br>
       <div><h5>{{course_brief}}</h5></div>
       </div>`,
@@ -113,10 +111,14 @@
             course_name: '',
             course_brief: '',
             course_id: '',
+            course_class_id: '',
         };
     },
     created: function () {
-        axios.get('http://localhost:5001/course/' + this.id)
+        console.log(this.id)
+        this.course_class_id = this.id
+        this.course_id = this.id.split('-')[0]
+        axios.get('http://localhost:5001/course/' + this.course_id)
             .then(response => {
                 this.course_id = response.data.data.course_id;
                 this.course_name = response.data.data.course_name;
@@ -132,4 +134,3 @@
 
 </body>
 </html>
-          
