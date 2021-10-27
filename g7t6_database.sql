@@ -56,22 +56,19 @@ INSERT INTO `person` (`id`, `name`, `email`, `pwd`) VALUES
 CREATE TABLE IF NOT EXISTS `engineers` (
 
   `engineer_id` INT NOT NULL UNIQUE,
-  `engineer_teleid` varchar(20) NOT NULL,
-  `engineer_completed_coursesid` varchar(64), 
-  `engineer_inprogress_coursesid` varchar(64), 
-  `engineer_preassigned_coursesid` varchar(64), 
-  `engineer_biddable_coursesid` varchar(64),  
+  `engineer_completed_courses` varchar(64), 
+  `engineer_inprogress_courses` varchar(64), 
   PRIMARY KEY (`engineer_id`))
   
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `engineers` (`engineer_id`, `engineer_teleid`, `engineer_completed_coursesid`, `engineer_inprogress_coursesid`, `engineer_preassigned_coursesid`, `engineer_biddable_coursesid`) VALUES
-(001, 'ally001', 'E101, E102, E103, E104, E105', 'E201, E202, E203, E204', 'E206, E207, E208', 'E301, E302, E303'),
-(002,'bob002', 'E101, E102, E103, E105', 'E201, E202, E203, E204', 'E206, E207, E208', 'E302, E303, E304'),
-(003, 'colin003', 'E102, E103, E104, E105', 'E201, E202, E203', 'E207, E208', 'E301, E302, E303'),
-(004, 'daniel004', 'E103, E104, E105', 'E203, E204, E205', 'E206, E207, E208', 'E303, E304, E305' ),
-(005, 'emma005','E101, E103, E104, E105', 'E201, E203, E204, E205', 'E206, E210', 'E301, E303, E305');
+INSERT INTO `engineers` (`engineer_id`, `engineer_completed_courses`, `engineer_inprogress_courses`) VALUES
+(001, 'C101-C1, C102-C2, C103-C2, C104-C4, C105-C3', 'C201-C2, C202-C1'),
+(002, 'C101-C1, C102-C3, C103-C2, C105-C3', 'C201-C1, C204-C2'),
+(003, 'C102-C1, C103-C2, C104-C4, C105-C3', 'C201-C1'),
+(004, 'C103-C2, C104-C2, C105-C3', 'C205-C2'),
+(005, 'C101-C3, C103-C2, C104-C1, C105-C2', 'C203-C2');
 
 
 
@@ -81,21 +78,20 @@ INSERT INTO `engineers` (`engineer_id`, `engineer_teleid`, `engineer_completed_c
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `trainers` (
   `trainer_id` INT NOT NULL UNIQUE,
-  `trainer_teleid` varchar(20) NOT NULL,
-  `trainer_course_section_id` varchar(200) NOT NULL,
+  `trainer_course_class_id` varchar(200) NOT NULL,
 
   PRIMARY KEY (`trainer_id`),
-  UNIQUE INDEX `trainer_course_section_id_UNIQUE` (`trainer_course_section_id`))
+  UNIQUE INDEX `trainer_course_section_id_UNIQUE` (`trainer_course_class_id`))
   
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `trainers` (`trainer_id`,`trainer_teleid`, `trainer_course_section_id`) VALUES
-(761, 'fred7621', 'E101G1, E101G2, E101G3, E102G1, E102G2, E102G3, E201G1, E201G2, E202G1, E202G2, E301G1, E301G2, E301G3, E302G1, E302G2, E302G3'),
-(762,'grace762', 'E103G1, E103G2, E103G3, E203G1, E203G2, E303G1, E303G2, E303G3, E304G1, E304G2, E304G3'),
-(763, 'helen763','E104G1, E104G2, E104G3, E105G1, E105G2, E105G3, E204G1, E204G2, E205G1, E205G2, E305G1, E305G2, E305G3'),
-(764, 'isabel764', 'E206G1, E206G2, E206G3, E207G1, E207G2, E207G3, E208G1, E208G2, E208G3'),
-(765, 'john765', 'E209G1, E209G2, E209G3, E210G1, E210G2, E210G3');
+INSERT INTO `trainers` (`trainer_id`, `trainer_course_class_id`) VALUES
+(761, 'C101-C1, C101-C2, C101-C3, C102-C1, C102-C2, C102-C3, C201-C1, C201-C2, C202-C1, C202-C2, C301-C1, C301-C2, C301-C3, C302-C1, C302-C2, C302-C3'),
+(762,'C103-C1, C103-C2, C103-C3, C203-C1, C203-C2, C303-C1, C303-C2, C303-C3, C304-C1, C304-C2, C304-C3'),
+(763, 'C104-C1, C104-C2, C104-C3, C105-C1, C105-C2, C105-C3, C204-C1, C204-C2, C205-C1, C205-C2, C305-C1, C305-C2, C305-C3'),
+(764, 'C206-C1, C206-C2, C206-C3, C207-C1, C207-C2, C207-C3, C208-C1, C208-C2, C208-C3'),
+(765, 'C209-C1, C209-C2, C209-C3, C210-C1, C210-C2, C210-C3');
 
 
 
@@ -113,10 +109,10 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `hr` (`hr_id`,`courses_assigned`) VALUES
-(366, 'E101, E102, E103, E104, E105'),
-(367, 'E201, E202, E203, E204, E205'),
-(368, 'E206, E207, E208, E209, E210'),
-(369, 'E301, E302, E303, E304, E305');
+(366, 'C101, C102, C103, C104, C105'),
+(367, 'C201, C202, C203, C204, C205'),
+(368, 'C206, C207, C208, C209, C210'),
+(369, 'C301, C302, C303, C304, C305');
 
 
 
@@ -152,45 +148,152 @@ CREATE TABLE IF NOT EXISTS `course_details` (
     `course_type` varchar(30) NOT NULL,
     `course_prerequisite` varchar(64), 
     `course_brief` varchar(200) NOT NULL,
-    `total_slots_available` INT,
-    `course_period` varchar(64) NOT NULL, 
-    `FK_trainer_course_section_id` varchar(200) NOT NULL ,
-    `FK_quiz_id` varchar(20), 
-    PRIMARY KEY (`course_id`),
-	CONSTRAINT `FK_trainer_course_section_id`
-		FOREIGN KEY (`FK_trainer_course_section_id`)
-		REFERENCES `trainers`(`trainer_course_section_id`),
-	CONSTRAINT `FK_quiz_id`
-		FOREIGN KEY (`FK_quiz_id`)
-		REFERENCES `quiz`(`quiz_id`))
+    `course_class` varchar(200) NOT NULL,
+    `lessons` varchar(200) NOT NULL,
+    `start_date` DATETIME NOT NULL, 
+    `end_date` DATETIME NOT NULL, 
+    PRIMARY KEY (`course_id`))
 
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `course_details` (`course_id`,`course_name`,`course_type`, `course_prerequisite`,`course_brief`, `total_slots_available`, `course_period`, `FK_trainer_course_section_id`, `FK_quiz_id`) VALUES
-('E101', 'Basic Mathematics', 'Assigned', NULL , 'This is a Year1 course which would be required to be completed prior to E201 Intermediate Mathematics', 120, 'Term1' , 'E101G1, E101G2, E101G3', 'A101'),
-('E102', 'Basic Engineering Mathematics', 'Assigned', NULL, 'This is a Year1 course which would be required to be completed prior to Intermediate Mathematics', 120, 'Term1' , 'E102G1, E102G2, E102G3', 'A102'),
-('E103', 'Introduction to Engineering', 'Biddable', NULL, 'This is a Year1 course which would be required to be completed prior to Engineering Project Management', 120, 'Term1', 'E103G1, E103G2, E103G3', 'A103'),
-('E104', 'Principles of Electrical Engineering', 'Assigned', NULL, 'This is a Year1 course which would be required to be completed prior to Applications of Electrical Engineering', 120, 'Term1', 'E104G1, E104G2, E104G3', 'A104'),
-('E105', 'Engineering Design and Solutions', 'Biddable', NULL, 'This is a Year1 course which would be required to be completed prior to Consumer Psychology', 120, 'Term1', 'E105G1, E105G2, E105G3', 'A105'),
+INSERT INTO `course_details` (`course_id`,`course_name`,`course_type`, `course_prerequisite`,`course_brief`, `course_class`, `lessons`, `start_date`, `end_date`) VALUES
+('C101', 'Basic Mathematics', 'Assigned', NULL , 'This is a Year1 course which would be required to be completed prior to C201 Intermediate Mathematics', 'C101-C1, C101-C2, C101-C3', 'C101-L1, C101-L2, C101-L3, C101-L4', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C102', 'Basic Engineering Mathematics', 'Assigned', NULL, 'This is a Year1 course which would be required to be completed prior to Intermediate Mathematics', 'C102-C1, C102-C2, C102-C3', 'C102-L1, C102-L2', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month ),
+('C103', 'Introduction to Engineering', 'Biddable', NULL, 'This is a Year1 course which would be required to be completed prior to Engineering Project Management', 'C103-C1, C103-C2', 'C103-L1, C103-L2, C103-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C104', 'Principles of Electrical Engineering', 'Assigned', NULL, 'This is a Year1 course which would be required to be completed prior to Applications of Electrical Engineering', 'C104-C1, C104-C2, C104-C3, C104-C4', 'C104-L1, C104-L2', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C105', 'Engineering Design and Solutions', 'Biddable', NULL, 'This is a Year1 course which would be required to be completed prior to Consumer Psychology', 'C105-C1, C105-C2, C105-C3', 'C105-L1, C105-L2, C105-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 
-('E201', 'Intermediate Mathematics', 'Biddable', 'E101', 'This is a Year1 course which requires the completion of E101 Basic Mathematics', 80, 'Term2', 'E201G1, E201G2', 'A201'),
-('E202', 'Intermediate Engineering Mathematics', 'Biddable', 'E102', 'This is a Year1 course which requires the completion of E102 Basic Engineering Mathematics', 80, 'Term2', 'E202G1, E202G2', 'A202'),
-('E203', 'Engineering Project Management', 'Assigned', 'E103' , 'This is a Year1 course which requires the completion of E103 Introduction to Engineering', 80, 'Term2' ,'E2O3G1, E203G2', 'A203'),
-('E204', 'Applications of Electrical Engineering', 'Assigned', 'E104', 'This is a Year1 course which requires the completion of E104 Principles of Electrical Engineering', 80, 'Term2' ,'E204G1, E204G2', 'A204'),
-('E205', 'Consumer Psychology', 'Biddable', 'E105','This is a Year1 course which requires the completion of E105 Engineering Design and Solutions', 80, 'Term2' , 'E205G1, E205G2', 'A205'),
+('C201', 'Intermediate Mathematics', 'Biddable', 'C101', 'This is a Year1 course which requires the completion of C101 Basic Mathematics', 'C201-C1, C201-C2', 'C201-L1, C201-L2, C201-L3, C201-L4', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C202', 'Intermediate Engineering Mathematics', 'Biddable', 'C102', 'This is a Year1 course which requires the completion of C102 Basic Engineering Mathematics','C202-C1, C202-C2', 'C202-L1, C202-L2', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C203', 'Engineering Project Management', 'Biddable', 'C103' , 'This is a Year1 course which requires the completion of C103 Introduction to Engineering','C203-C1, C203-C2', 'C203-L1, C203-L2, C203-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C204', 'Applications of Electrical Engineering', 'Biddable', 'C104', 'This is a Year1 course which requires the completion of C104 Principles of Electrical Engineering', 'C204-C1, C204-C2', 'C204-L1, C204-L2', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C205', 'Consumer Psychology', 'Biddable', 'C105','This is a Year1 course which requires the completion of C105 Engineering Design and Solutions', 'C205-C1, C205-C2', 'C205-L1, C205-L2, C205-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 
-('E206', 'Programming for Business', 'Assigned', NULL, 'This is a pre-assigned course', 120, 'Term1', 'E206G1, E206G2, E206G3', 'A206'),
-('E207', 'Company Overview', 'Assigned', NULL, 'This is a pre-assigned course', 120, 'Term1', 'E207G1, E207G2, E207G3', 'A207'),
-('E208', 'Company Products', 'Assigned', NULL, 'This is a pre-assigned course', 120, 'Term1', 'E208G1, E208G2, E208G3', 'A208'),
-('E209', 'Service Operations Management', 'Assigned', NULL, 'This is a pre-assigned course', 120, 'Term2', 'E209G1, E209G2, E209G3', 'A209'),
-('E210', 'Business Communication', 'Assigned', NULL, 'This is a pre-assigned course', 120, 'Term2', 'E210G1, E210G2, E210G3', 'A210'),
+('C301', 'Advanced Mathematics', 'Biddable', 'C101, C201', 'This is a biddable course, please refer to OASIS for more information', 'C301-C1, C301-C2, C301-C2', 'C301-L1, C301-L2, C301-L3, C301-L4', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C302', 'Advanced Engineering Mathematics', 'Biddable', 'C102, C202', 'This is a biddable course, please refer to OASIS for more information', 'C302-C1, C302-C2, C302-C3', 'C302-L1, C302-L2', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C303', 'Emerging Technologies', 'Biddable', 'C203', 'This is a biddable course, please refer to OASIS for more information', 'C303-C1, C303-C2, C303-C3', 'C303-L1, C303-L2, C303-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C304', 'Financial Technology', 'Biddable', 'C203', 'This is a biddable course, please refer to OASIS for more information','C304-C1, C304-C2, C304-C3', 'C304-L1, C304-L2', '2021-11-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C305', 'Event Management & Operations', 'Biddable', NULL, 'This is a biddable course, please refer to OASIS for more information', 'C305-C1', 'C305-L1, C305-L2, C305-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month);
 
-('E301', 'Advanced Mathematics', 'Biddable', 'E101, E201', 'This is a biddable course, please refer to OASIS for more information', 120, 'Term1', 'E301G1, E301G2, E301G3', NULL),
-('E302', 'Advanced Engineering Mathematics', 'Biddable', 'E102, E202', 'This is a biddable course, please refer to OASIS for more information', 120, 'Term1', 'E302G1, E302G2, E302G3', NULL),
-('E303', 'Emerging Technologies', 'Biddable', 'E203', 'This is a biddable course, please refer to OASIS for more information', 120, 'Term1', 'E303G1, E303G2, G3', NULL),
-('E304', 'Financial Technology', 'Biddable', 'E203', 'This is a biddable course, please refer to OASIS for more information', 120, 'Term1', 'E304G1, E304G2, G3', NULL),
-('E305', 'Event Management & Operations', 'Biddable', NULL, 'This is a biddable course, please refer to OASIS for more information', 120, 'Term2', 'E30G1, E304G2, E304G3', NULL);
+
+
+
+-- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Course's Class Table
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `course_class` (
+
+  `course_class_id` varchar(20) NOT NULL UNIQUE,
+  `course_id` varchar(20)  NOT NULL,
+  `seats_available` INT  NOT NULL ,
+
+  PRIMARY KEY (`course_class_id`))
+
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO `course_class` (`course_class_id`,`course_id`, `seats_available`) VALUES
+('C101-C1', 'C101',20),
+('C101-C2', 'C101',40),
+('C101-C3', 'C101',40),
+('C102-C1', 'C102',30),
+('C102-C2', 'C102',30),
+('C102-C3', 'C102',30),
+('C103-C1', 'C103',50),
+('C103-C2', 'C103',50),
+('C104-C1', 'C104',50),
+('C104-C2', 'C104',10),
+('C104-C3', 'C104',15),
+('C104-C4', 'C104',20),
+('C105-C1', 'C105',30),
+('C105-C2', 'C105',30),
+('C105-C3', 'C105',20),
+('C201-C1', 'C201',40),
+('C201-C2', 'C201',40),
+('C202-C1', 'C202',40),
+('C202-C2', 'C202',40),
+('C203-C1', 'C203',50),
+('C203-C2', 'C203',50),
+('C204-C1', 'C204',30),
+('C204-C2', 'C204',25),
+('C205-C1', 'C205',35),
+('C205-C2', 'C205',35),
+('C301-C1', 'C301',70),
+('C302-C2', 'C302',70),
+('C303-C3', 'C303',70),
+('C304-C4', 'C304',70),
+('C305-C5', 'C305',70);
+
+
+
+
+-- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Course's Lesson Table
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `course_lesson` (
+
+  `course_lesson_id` varchar(20) NOT NULL UNIQUE,
+  `course_id` varchar(20)  NOT NULL,
+  `pdf_material` varchar(300)  NOT NULL,
+  `ppt_material` varchar(300)  NOT NULL,
+  `quiz_id` varchar(20)  DEFAULT NULL,
+  PRIMARY KEY (`course_lesson_id`))
+
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO `course_lesson` (`course_lesson_id`,`course_id`, `pdf_material`,`ppt_material`) VALUES
+('C101-L1', 'C101', 'pdf1.pdf, pdf2.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C101-L2', 'C101', 'pdf3.pdf, pdf4.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C101-L3', 'C101', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C101-L4', 'C101', 'pdf5.pdf, pdf4.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C102-L1', 'C102', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C102-L2', 'C102', 'pdf1.pdf, pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C103-L1', 'C103', 'pdf6.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C103-L2', 'C103', 'pdf5.pdf, pdf2.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C103-L3', 'C103', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C104-L1', 'C104', 'pdf3.pdf, pdf4.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C104-L2', 'C104', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C105-L1', 'C105', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C105-L2', 'C105', 'pdf3.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C105-L3', 'C105', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
+
+('C201-L1', 'C201', 'pdf1.pdf, pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C201-L2', 'C201', 'pdf6.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C201-L3', 'C201', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C201-L4', 'C201', 'pdf3.pdf, pdf4.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C202-L1', 'C202', 'pdf5.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C202-L2', 'C202', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C203-L1', 'C203', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C203-L3', 'C203', 'pdf5.pdf, pdf2.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C203-L2', 'C203', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C204-L1', 'C204', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C204-L2', 'C204', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt3.pptx'),
+('C205-L1', 'C205', 'pdf6.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C205-L2', 'C205', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C205-L3', 'C205', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx'),
+
+('C301-L1', 'C301', 'pdf3.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C301-L2', 'C301', 'pdf5.pdf, pdf2.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C301-L3', 'C301', 'pdf5.pdf', 'ppt1.pptx, ppt3.pptx'),
+('C301-L4', 'C301', 'pdf6.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C302-L1', 'C302', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C302-L2', 'C302', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C303-L1', 'C303', 'pdf5.pdf, pdf2.pdf', 'ppt1.pptx, ppt3.pptx'),
+('C303-L2', 'C303', 'pdf5.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C303-L3', 'C303', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C304-L1', 'C304', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C304-L2', 'C304', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C305-L1', 'C305', 'pdf5.pdf, pdf6.pdf', 'ppt2.pptx, ppt4.pptx'),
+('C305-L2', 'C305', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
+('C305-L3', 'C305', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx');
+
+
 
 
 
@@ -204,6 +307,7 @@ CREATE TABLE IF NOT EXISTS `enrollment` (
   `enrollment_id` INT(20) NOT NULL UNIQUE AUTO_INCREMENT,
   `engineer_id` INT(20) DEFAULT NULL,
   `course_id` VARCHAR(20) DEFAULT NULL ,
+  `course_class_id` VARCHAR(30) DEFAULT NULL ,
 
   PRIMARY KEY (`enrollment_id`))
 
