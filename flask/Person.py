@@ -42,11 +42,8 @@ class Engineer(db.Model):
     __tablename__ = 'engineers'
 
     engineer_id = db.Column(db.Integer, primary_key=True)
-    engineer_teleid = db.Column(db.String(20))
-    engineer_completed_coursesid = db.Column(db.String(64))
-    engineer_inprogress_coursesid = db.Column(db.String(64))
-    engineer_preassigned_coursesid = db.Column(db.String(64))
-    engineer_biddable_coursesid = db.Column(db.String(64))
+    engineer_completed_courses = db.Column(db.String(64))
+    engineer_inprogress_courses = db.Column(db.String(64))
 
 
     __mapper_args__ = {
