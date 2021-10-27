@@ -20,8 +20,9 @@ class Enrollment(db.Model):
     __tablename__ = 'enrollment'
 
     enrollment_id = db.Column(db.Integer, primary_key=True)
-    engineer_id= db.Column(db.String(100))
-    course_id = db.Column(db.String(200))
+    engineer_id= db.Column(db.Integer)
+    course_id = db.Column(db.String(20))
+    course_class_id = db.Column(db.String(20))
 
     __mapper_args__ = {
         'polymorphic_identity': 'enrollment'
@@ -46,47 +47,11 @@ class Enrollment(db.Model):
     
     def get_course_id(self):
         return self.course_id
+    
+    def get_course_classid(self):
+        return self.course_class_id
 
 db.create_all()
-
-
-
-# @app.route("/enrollment", methods=['POST'])
-# def create_enrollment():
-#     data = request.get_json()
-#     if not all(key in data.keys() for
-#                key in ('user_id', 'course_id')):
-#         return jsonify({
-#             "message": "Incorrect JSON object provided."
-#         }), 500
-    
-#     # # (1): Validate course_id
-#     # course_id = Course.query.filter_by(course_id=data['course_id']).first()
-#     # if not course_id:
-#     #     return jsonify({
-#     #         "message": "Course not valid."
-#     #     }), 500
-
-#     # # (3): Validate engineer_id
-#     # user_id = Engineers.query.filter_by(user_id=data['user_id']).first()
-#     # if not user_id:
-#     #     return jsonify({
-#     #         "message": "Engineer not valid."
-#     #     }), 500
-
-#     # # (4): Create enrollment record
-#     enrollment= Enrollment(
-#         course_id=data['course_id'], user_id=data['user_id'])
-    
-#     # # (5): Commit to DB
-#     try:
-#         db.session.add(enrollment)
-#         db.session.commit()
-#         return jsonify(enrollment.to_dict()), 201
-#     except Exception:
-#         return jsonify({
-#             "message": "Unable to commit to database."
-#         }), 500
 
 
 @app.route("/enrollment", methods=['POST'])
@@ -94,17 +59,17 @@ def create_enrollment():
     data = request.get_json()
     # print(data)
     if not all(key in data.keys() for
-               key in ('engineer_id', 'course_id')):
+               key in ('engineer_id', 'course_id', 'course_class_id')):
         return jsonify({
             "message": "Incorrect JSON object provided."
         }), 500
     enrollment = Enrollment(
-      engineer_id=data['engineer_id'], course_id=data['course_id'])
+      engineer_id=data['engineer_id'], course_id=data['course_id'], course_class_id=data['course_class_id'])
     print(enrollment.get_course_id())
     print(enrollment.get_user_id())
     print(enrollment.get_enrollment_ID())
-    # print(enrollment.user_id)
-    # print(enrollment.course_id)
+    print(enrollment.get_course_classid())
+    
 
     try:
         db.session.add(enrollment)
@@ -116,22 +81,6 @@ def create_enrollment():
         }), 500
 
 
-# @app.route("/enrollment/<string:course_id>")
-# def find_by_id(course_id):
-#     course_id = Course.query.filter_by(course_id=course_id).first()
-#     if course_id:
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": course_id.json()
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "message": "Course ID not found."
-#         }
-#     ), 404
 
 
 if __name__ == '__main__':
