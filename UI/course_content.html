@@ -322,18 +322,28 @@
               }
           else{
             if(completed_preq.length == prequisite_course.length){
-                  console.log(this.course_id)
-                  console.log(this.engineer_id)
-                  console.log(this.course_class)
-                  axios.post('http://localhost:5003/enrollment', {
-                    engineer_id: this.engineer_id,
-                    course_id: this.course_id,
-                    course_class_id: this.course_class
-                  })
+                  axios.get('http://localhost:5003/enrollment')
                   .then(response => {
-                      alert('Success!')
-                      return false;
+                      const enrollment_list = response.data.data;
+                      var already_exists_engineer = enrollment_list.some(el => el.engineer_id == this.engineer_id)
+                      var already_exists_course = enrollment_list.some(el => el.course_id == this.course_id)
+                      if(already_exists_course && already_exists_engineer){
+                        alert('You have already enrolled for this course! Please contact the HR if you want to change your Course"s Class.')
+                      }
+                      else{
+                        axios.post('http://localhost:5003/enrollment', {
+                          engineer_id: this.engineer_id,
+                          course_id: this.course_id,
+                          course_class_id: this.course_class
+                        })
+                        .then(response => {
+                            alert('Success!')
+                            return false;
+                        })
+                      }
+                      
                   })
+                  .catch(error => alert(error));
             }
             else{
               alert('You have not completed all the Pre-requisites of the Course')
@@ -341,12 +351,7 @@
           }
         }
         
-
         }
-        
-        
-      
-        
       
     }
   });
