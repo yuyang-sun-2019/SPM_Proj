@@ -37,7 +37,7 @@
 <div>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <h2 style="margin-left: 1em;">NavBar</h2>
+      <h2 style="margin-left: 1em;">Engineer's Portal</h2>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -53,15 +53,16 @@
             <a class="nav-link active" aria-current="page" href="./engineer_current.html" style="font-size: medium; margin-left: 0.5em">Current Courses</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./engineer_course.html" style="font-size: medium; margin-left: 0.5em">List of Courses</a>
+            <a class="nav-link active" aria-current="page" href="./engineer_course.html" style="font-size: medium; margin-left: 0.5em">Courses Available</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./engineer_profile.html" style="font-size: medium; margin-left: 0.5em">Profile Page</a>
+            <a class="nav-link active" aria-current="page" href="./enrollment_list.html" style="font-size: medium; margin-left: 0.5em">Enrollment Application</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./engineer_profile.html" style="font-size: medium; margin-left: 0.5em">Profile</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-bell" style="color: grey; size: 3em;"></span> Notification</a></li>
-          <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-earphone" style="color: grey; size: 3em;"></span> Chat/Email</a></li>
           <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-log-out" style="color: grey; size: 3em;"></span> Logout</a></li>
         </ul>
       </div>
@@ -253,7 +254,7 @@
   });
 
 
-
+  // To View the List of Classes and theirs seats available
   Vue.component('course-class', {
     props: ['id'],
     template: `<td>{{slots}}</td>`,
@@ -273,7 +274,7 @@
 
   
   
-
+  // When you click on Enroll
   const enroll = new Vue({
     el: '#enroll',
     data: {
@@ -303,55 +304,66 @@
         
         var end = new Date(course_end_date)
         var registration_end = new Date(end)
-        registration_end = new Date(registration_end.setMonth(end.getMonth() - 1))
+        registration_end = new Date(registration_end.setMonth(end.getDate() + 15))
 
-
-
-        if(dateTime < registration_start){
-          alert('It is still too early Enroll into this course. You can only enroll 15 days before the start of Course Period')
-        }
-        else if(dateTime > registration_end){
-          alert('Its too late to Enroll into this course. Please wait for the the next cycle of this Course to start.')
-        }
-        else{
-          if(engprog_courses.includes(course_id) || engcompleted_courses.includes(course_id)){
-            alert('You have already completed/enrolled in the Course')
-          }
-          else if(course_type == 'Assigned'){
-                  alert('This course is Assigned. You cannot Enrol for this course.')
+        axios.get('http://localhost:5001/course_class/'+this.course_class)
+            .then(response => {
+              this.slots = response.data.data['seats_available']
+              if(this.slots <= 0){
+                alert('There are no available seats. Sorry!')
               }
-          else{
-            if(completed_preq.length == prequisite_course.length){
-                  axios.get('http://localhost:5003/enrollment')
-                  .then(response => {
-                      const enrollment_list = response.data.data;
-                      var already_exists_engineer = enrollment_list.some(el => el.engineer_id == this.engineer_id)
-                      var already_exists_course = enrollment_list.some(el => el.course_id == this.course_id)
-                      if(already_exists_course && already_exists_engineer){
-                        alert('You have already enrolled for this course! Please contact the HR if you want to change your Course"s Class.')
+              else{
+
+                if(confirm("Are you sure you want to Enroll in this Course Class?")){
+                  if(dateTime < registration_start){
+                    alert('It is still too early Enroll into this course. You can only enroll 15 days before or after the start of Course Period')
+                  }
+                  else if(dateTime > registration_end){
+                    alert('Its too late to Enroll into this course. Please wait for the the next cycle of this Course to start.')
+                  }
+                  else{
+                    if(engprog_courses.includes(course_id) || engcompleted_courses.includes(course_id)){
+                      alert('You have already completed/enrolled in the Course')
+                    }
+                    else if(course_type == 'Assigned'){
+                            alert('This course is Assigned. You cannot Enrol for this course.')
+                        }
+                    else{
+                      if(completed_preq.length == prequisite_course.length){
+                            axios.get('http://localhost:5003/enrollment')
+                            .then(response => {
+                                const enrollment_list = response.data.data;
+                                var already_exists_engineer = enrollment_list.some(el => el.engineer_id == this.engineer_id)
+                                var already_exists_course = enrollment_list.some(el => el.course_id == this.course_id)
+                                if(already_exists_course && already_exists_engineer){
+                                  alert('You have already enrolled for this course! Please deleted your previous request, to send in a new request.')
+                                }
+                                else{
+                                  axios.post('http://localhost:5003/enrollment', {
+                                    engineer_id: this.engineer_id,
+                                    course_id: this.course_id,
+                                    course_class_id: this.course_class
+                                  })
+                                  .then(response => {
+                                      alert('You successfully sent in your application for enrolling!')
+                                      return false;
+                                  })
+                                }
+                                
+                            })
+                            .catch(error => alert(error));
                       }
                       else{
-                        axios.post('http://localhost:5003/enrollment', {
-                          engineer_id: this.engineer_id,
-                          course_id: this.course_id,
-                          course_class_id: this.course_class
-                        })
-                        .then(response => {
-                            alert('Success!')
-                            return false;
-                        })
+                        alert('You have not completed all the Pre-requisites of the Course')
                       }
-                      
-                  })
-                  .catch(error => alert(error));
-            }
-            else{
-              alert('You have not completed all the Pre-requisites of the Course')
-            }
-          }
-        }
-        
-        }
+                    }
+                  }
+                }
+
+              }
+            }); 
+
+      }
       
     }
   });

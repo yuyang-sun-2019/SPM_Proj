@@ -71,16 +71,13 @@
 </div>
 
 
-<br><br>
-<div id="course_lesson" class="container">
-  <div v-for="record in lessons">
-      <h3>{{record.split('-')[0]}}  -  <i>{{record}} </i>    &nbsp&nbsp
-      <a v-bind:href="'./lesson.html?id='+ record">View the Lesson</a></h3>
-      <br>
-  </div>
+<div id="main-container" class="container">  
+    <embed id="video_material" type="video/webm" src="" width="80%" height="600">
 </div>
 
 
+
+  
   <script>
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
@@ -92,29 +89,17 @@
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
 
+
+    var lesson_id = getParameterByName('id');
     var engineer_id = sessionStorage.getItem("user_id");
-    var course_class = getParameterByName('id');
-    var course_id = course_class.split('-')[0]
 
-    var course_lessons = []
-    
-
-    const vm = new Vue({
-          el: '#course_lesson',
-          data: {
-              lessons: []
-          },
-          mounted: function() {
-              axios.get('http://localhost:5001/course/'+course_id)
-                  .then(response => {
-                      this.lessons = response.data.data['lessons'];
-                      this.lessons = this.lessons.split(', ')
-                      course_lessons = this.lessons
-                  })
-                  .catch(error => alert(error));
-          }
-      });
+    pdf_id = '../files/'+lesson_id
+    console.log(pdf_id)
+    const pdf_embed = document.getElementById('video_material')
+    pdf_embed.src = pdf_id
+      
 
   </script>
   
 </body>
+

@@ -70,17 +70,26 @@
   </nav>
 </div>
 
+<br>
+<br>
+<div style="text-align: center;">
+  <h1>Congrats! You have successfully downloaded the Document!</h1>
+</div>
 
-<br><br>
-<div id="course_lesson" class="container">
-  <div v-for="record in lessons">
-      <h3>{{record.split('-')[0]}}  -  <i>{{record}} </i>    &nbsp&nbsp
-      <a v-bind:href="'./lesson.html?id='+ record">View the Lesson</a></h3>
-      <br>
-  </div>
+<br>
+<br>
+<div>
+  <center><img src="../files/download_success.jpg" class="center" alt="centered image"></center>
+</div>
+
+<div id="main-container" class="container">  
+  <embed id="doc_material" src="" type="application/pdf" width="100%" height="600px">
 </div>
 
 
+
+
+  
   <script>
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
@@ -92,28 +101,17 @@
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
 
+
+    var lesson_id = getParameterByName('id');
     var engineer_id = sessionStorage.getItem("user_id");
-    var course_class = getParameterByName('id');
-    var course_id = course_class.split('-')[0]
 
-    var course_lessons = []
-    
+    ppt_id = '../files/'+lesson_id
+    console.log(ppt_id)
+    const pdf_embed = document.getElementById('doc_material')
+    pdf_embed.src = ppt_id
+      
 
-    const vm = new Vue({
-          el: '#course_lesson',
-          data: {
-              lessons: []
-          },
-          mounted: function() {
-              axios.get('http://localhost:5001/course/'+course_id)
-                  .then(response => {
-                      this.lessons = response.data.data['lessons'];
-                      this.lessons = this.lessons.split(', ')
-                      course_lessons = this.lessons
-                  })
-                  .catch(error => alert(error));
-          }
-      });
+  
 
   </script>
   
