@@ -37,7 +37,7 @@
 <div>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <h2 style="margin-left: 1em;">NavBar</h2>
+      <h2 style="margin-left: 1em;">Engineer's Portal</h2>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -53,15 +53,16 @@
             <a class="nav-link active" aria-current="page" href="./engineer_current.html" style="font-size: medium; margin-left: 0.5em">Current Courses</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./engineer_course.html" style="font-size: medium; margin-left: 0.5em">List of Courses</a>
+            <a class="nav-link active" aria-current="page" href="./engineer_course.html" style="font-size: medium; margin-left: 0.5em">Courses Available</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./engineer_profile.html" style="font-size: medium; margin-left: 0.5em">Profile Page</a>
+            <a class="nav-link active" aria-current="page" href="./enrollment_list.html" style="font-size: medium; margin-left: 0.5em">Enrollment Application</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./engineer_profile.html" style="font-size: medium; margin-left: 0.5em">Profile</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-bell" style="color: grey; size: 3em;"></span> Notification</a></li>
-          <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-earphone" style="color: grey; size: 3em;"></span> Chat/Email</a></li>
           <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-log-out" style="color: grey; size: 3em;"></span> Logout</a></li>
         </ul>
       </div>
@@ -85,10 +86,26 @@
     </div>
     <br>
     <br>
+    <h3><strong>View Video Materials of {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in video_material">
+      <a v-bind:href="'./lesson_video.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">View the Video</h6></a>
+      <br>
+    </div>
+    <br>
+    <br>
     <h3><strong>Download Powerpoint Materials of {{lesson_id}}</strong></h3>
     <br>
     <div v-for="record in ppt_material">
       <a v-bind:href="'./lesson_ppt.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the PowerPoint Slides</h6></a>
+      <br>
+    </div>
+    <br>
+    <br>
+    <h3><strong>Download Document Materials of {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in doc_material">
+      <a v-bind:href="'./lesson_docx.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the Document</h6></a>
       <br>
     </div>
 
@@ -119,6 +136,8 @@
               lesson_id: '',
               pdf_material: [],
               ppt_material: [],
+              video_material: [],
+              doc_material: [],
           },
           mounted: function() {
               axios.get('http://localhost:5001/course_lesson/'+lesson_id)
@@ -127,18 +146,14 @@
                       this.lesson_id = response.data.data['course_lesson_id']
                       this.pdf_material = response.data.data['pdf_material'].split(', ')
                       this.ppt_material = response.data.data['ppt_material'].split(', ')
+                      this.video_material = response.data.data['video_material'].split(', ')
+                      this.doc_material = response.data.data['doc_material'].split(', ')
                       console.log(this.ppt_material)
                   })
                   .catch(error => alert(error));
           }
       });
 
-
-
-  
-
-
-  
 
   </script>
   
