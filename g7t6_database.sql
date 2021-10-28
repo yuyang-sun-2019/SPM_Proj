@@ -109,9 +109,10 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `hr` (`hr_id`,`courses_assigned`) VALUES
+INSERT INTO `hr` (`hr_id`,`courses_assigned`) VALUES
 (366, 'C101, C102, C103, C104, C105'),
-(367, 'C201, C202, C203, C204, C205'),
-(368, 'C206, C207, C208, C209, C210'),
+(367, 'C201, C202, C203'),
+(368, 'C204, C205'),
 (369, 'C301, C302, C303, C304, C305');
 
 
