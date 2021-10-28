@@ -42,10 +42,10 @@ INSERT INTO `person` (`id`, `name`, `email`, `pwd`) VALUES
 (763, 'Helen', 'helen@trainer.com', 'trainer763'),
 (764, 'Isabel', 'isabel@trainer.com', 'trainer764'),
 (765, 'John', 'john@trainer.com', 'trainer765'),
-(366, 'Kevin', 'kevin@hr.com', 'hr766'),
-(367, 'Leo', 'leo@hr.com' , 'hr767'),
-(368, 'Matt', 'matt@hr.com', 'hr768'),
-(369, 'Nat', 'nat@hr.com', 'hr769');
+(366, 'Kevin', 'kevin@hr.com', 'hr366'),
+(367, 'Leo', 'leo@hr.com' , 'hr367'),
+(368, 'Matt', 'matt@hr.com', 'hr368'),
+(369, 'Nat', 'nat@hr.com', 'hr369');
 
 
 
@@ -222,10 +222,19 @@ INSERT INTO `course_class` (`course_class_id`,`course_id`, `seats_available`) VA
 ('C205-C1', 'C205',35),
 ('C205-C2', 'C205',35),
 ('C301-C1', 'C301',70),
-('C302-C2', 'C302',70),
-('C303-C3', 'C303',70),
-('C304-C4', 'C304',70),
-('C305-C5', 'C305',70);
+('C301-C2', 'C303',30),
+('C301-C3', 'C303',30),
+('C302-C1', 'C302',0),
+('C302-C2', 'C303',30),
+('C302-C3', 'C303',30),
+('C303-C1', 'C303',30),
+('C303-C2', 'C303',0),
+('C303-C3', 'C303',30),
+('C304-C1', 'C304',70),
+('C304-C2', 'C304',40),
+('C304-C3', 'C304',0),
+('C305-C1', 'C305',10);
+
 
 
 
@@ -241,57 +250,59 @@ CREATE TABLE IF NOT EXISTS `course_lesson` (
   `course_id` varchar(20)  NOT NULL,
   `pdf_material` varchar(300)  NOT NULL,
   `ppt_material` varchar(300)  NOT NULL,
+  `video_material` varchar(300)  NOT NULL,
+  `doc_material` varchar(300)  NOT NULL,
   `quiz_id` varchar(20)  DEFAULT NULL,
   PRIMARY KEY (`course_lesson_id`))
 
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `course_lesson` (`course_lesson_id`,`course_id`, `pdf_material`,`ppt_material`) VALUES
-('C101-L1', 'C101', 'pdf1.pdf, pdf2.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C101-L2', 'C101', 'pdf3.pdf, pdf4.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C101-L3', 'C101', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C101-L4', 'C101', 'pdf5.pdf, pdf4.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C102-L1', 'C102', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C102-L2', 'C102', 'pdf1.pdf, pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C103-L1', 'C103', 'pdf6.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C103-L2', 'C103', 'pdf5.pdf, pdf2.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C103-L3', 'C103', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C104-L1', 'C104', 'pdf3.pdf, pdf4.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C104-L2', 'C104', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C105-L1', 'C105', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C105-L2', 'C105', 'pdf3.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C105-L3', 'C105', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
+INSERT INTO `course_lesson` (`course_lesson_id`,`course_id`, `pdf_material`,`ppt_material`,`video_material`,`doc_material`) VALUES
+('C101-L1', 'C101', 'pdf1.pdf, pdf2.pdf', 'ppt1.pptx, ppt2.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C101-L2', 'C101', 'pdf3.pdf, pdf4.pdf', 'ppt3.pptx, ppt4.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C101-L3', 'C101', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C101-L4', 'C101', 'pdf5.pdf, pdf4.pdf', 'ppt3.pptx, ppt4.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C102-L1', 'C102', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt2.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C102-L2', 'C102', 'pdf1.pdf, pdf5.pdf', 'ppt2.pptx, ppt4.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C103-L1', 'C103', 'pdf6.pdf', 'ppt3.pptx, ppt4.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C103-L2', 'C103', 'pdf5.pdf, pdf2.pdf', 'ppt1.pptx, ppt2.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx'),
+('C103-L3', 'C103', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C104-L1', 'C104', 'pdf3.pdf, pdf4.pdf', 'ppt2.pptx, ppt4.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C104-L2', 'C104', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx'),
+('C105-L1', 'C105', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C105-L2', 'C105', 'pdf3.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx'),
+('C105-L3', 'C105', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
 
-('C201-L1', 'C201', 'pdf1.pdf, pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C201-L2', 'C201', 'pdf6.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C201-L3', 'C201', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C201-L4', 'C201', 'pdf3.pdf, pdf4.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C202-L1', 'C202', 'pdf5.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C202-L2', 'C202', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C203-L1', 'C203', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C203-L3', 'C203', 'pdf5.pdf, pdf2.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C203-L2', 'C203', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C204-L1', 'C204', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C204-L2', 'C204', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt3.pptx'),
-('C205-L1', 'C205', 'pdf6.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C205-L2', 'C205', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C205-L3', 'C205', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx'),
+('C201-L1', 'C201', 'pdf1.pdf, pdf5.pdf', 'ppt2.pptx, ppt4.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C201-L2', 'C201', 'pdf6.pdf', 'ppt1.pptx, ppt2.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C201-L3', 'C201', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx'),
+('C201-L4', 'C201', 'pdf3.pdf, pdf4.pdf', 'ppt2.pptx, ppt4.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C202-L1', 'C202', 'pdf5.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C202-L2', 'C202', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C203-L1', 'C203', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C203-L3', 'C203', 'pdf5.pdf, pdf2.pdf', 'ppt1.pptx, ppt2.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C203-L2', 'C203', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx'),
+('C204-L1', 'C204', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C204-L2', 'C204', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt3.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx'),
+('C205-L1', 'C205', 'pdf6.pdf', 'ppt2.pptx, ppt4.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C205-L2', 'C205', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx'),
+('C205-L3', 'C205', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
 
-('C301-L1', 'C301', 'pdf3.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C301-L2', 'C301', 'pdf5.pdf, pdf2.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C301-L3', 'C301', 'pdf5.pdf', 'ppt1.pptx, ppt3.pptx'),
-('C301-L4', 'C301', 'pdf6.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C302-L1', 'C302', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C302-L2', 'C302', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C303-L1', 'C303', 'pdf5.pdf, pdf2.pdf', 'ppt1.pptx, ppt3.pptx'),
-('C303-L2', 'C303', 'pdf5.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C303-L3', 'C303', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C304-L1', 'C304', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C304-L2', 'C304', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt2.pptx'),
-('C305-L1', 'C305', 'pdf5.pdf, pdf6.pdf', 'ppt2.pptx, ppt4.pptx'),
-('C305-L2', 'C305', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx'),
-('C305-L3', 'C305', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx');
+('C301-L1', 'C301', 'pdf3.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C301-L2', 'C301', 'pdf5.pdf, pdf2.pdf', 'ppt2.pptx, ppt4.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C301-L3', 'C301', 'pdf5.pdf', 'ppt1.pptx, ppt3.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C301-L4', 'C301', 'pdf6.pdf', 'ppt3.pptx, ppt4.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C302-L1', 'C302', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt2.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C302-L2', 'C302', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C303-L1', 'C303', 'pdf5.pdf, pdf2.pdf', 'ppt1.pptx, ppt3.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C303-L2', 'C303', 'pdf5.pdf, pdf6.pdf', 'ppt1.pptx, ppt2.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx'),
+('C303-L3', 'C303', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C304-L1', 'C304', 'pdf5.pdf', 'ppt2.pptx, ppt4.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C304-L2', 'C304', 'pdf3.pdf, pdf4.pdf', 'ppt1.pptx, ppt2.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx'),
+('C305-L1', 'C305', 'pdf5.pdf, pdf6.pdf', 'ppt2.pptx, ppt4.pptx', 'vid2.mp4', 'doc1.docx, doc2.docx'),
+('C305-L2', 'C305', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
+('C305-L3', 'C305', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx');
 
 
 
