@@ -117,6 +117,8 @@ class Course_Lesson(db.Model):
     course_id = db.Column(db.String(20))
     pdf_material = db.Column(db.String(300))
     ppt_material = db.Column(db.String(300))
+    video_material = db.Column(db.String(300))
+    doc_material = db.Column(db.String(300))
     quiz_id = db.Column(db.String(20))
     
 
