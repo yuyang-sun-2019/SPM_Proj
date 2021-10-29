@@ -93,7 +93,7 @@
                 <td>{{ record.engineer_id }}</td>
                 <td>{{ record.course_id }}</td>
                 <td>{{record.course_class_id}}</td>
-                <td><input type="checkbox" name="flexCheckBoxDefault" :value="record.enrollment_id"/></td>
+                <td><input type="checkbox" name="flexCheckBoxDefault" :value="record.enrollment_id+' '+record.course_id"/></td>
             </tr>
         </tbody>
     </table>
@@ -139,12 +139,21 @@
           },
       });
 
-
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+' '+time;
+  dateTime = new Date(dateTime)
+    
   var enroll = new Vue({
     el: '#enroll',
     data: {
         course_class: [],
-        course: ''
+        course: '',
+        course_enddate: '',
+        course_startdate: '',
+        id: [],
+        //selected: []
 
     },
     methods:{
@@ -152,20 +161,42 @@
         const values = Array
             .from(document.querySelectorAll('input[type="checkbox"]'))
             .filter((checkbox) => checkbox.checked)
-            .map((checkbox) => checkbox.value);
-            console.log(values)
+            .map((checkbox) => checkbox.value.split(' '));
+           
+        
           if(confirm("Are you sure you want to delete this record?")){
-            for(var i =0; i<values.length; i++){
-              axios.post('../UI/hr_pov/action.php',{
-                action: 'delete',
-                id: values[i]
-              }).then(function(response){
-                console.log(response.data)
-                  alert(response.data.message)
-              })
+            for(let i =0; i<values.length; i++){
+              this.id.push(values[i][0])
+              axios.get('http://localhost:5001/course/'+values[i][1])
+                  .then(response => {
+                    this.course_startdate = new Date(response.data.data['start_date'])
+                    var registration_start = new Date(this.course_startdate)
+                    registration_start = new Date(registration_start.setDate(this.course_startdate.getDate() - 15))
+
+                    this.course_enddate = new Date(response.data.data['end_date'])
+                    var registration_end = new Date(this.course_enddate)
+                    registration_end = new Date(registration_end.setMonth(this.course_enddate.getDate() + 15))
+
+                    if(!(dateTime >= registration_start) || !(dateTime <= registration_end)){
+                      alert('You can only withdraw during the Self Enrollment Period. Please write to L&D if you want to withdraw.')
+                      
+                    }
+                    else{
+                      axios.post('../UI/hr_pov/action.php',{
+                          action: 'delete',
+                          id: this.id[i]
+                        }).then(function(response){
+                          console.log(response.data)
+                            alert(response.data.message)
+                            alert('Please refresh the page')
+                        })
+                    }
+                  })
+                  .catch(error => alert(error));
             }
-            location.reload()
+            
           }
+          
       },
         
     }
