@@ -64,10 +64,10 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `engineers` (`engineer_id`, `engineer_completed_courses`, `engineer_inprogress_courses`) VALUES
-(001, 'C101-C1, C102-C2, C103-C2, C104-C4, C105-C3', 'C201-C2, C202-C1'),
-(002, 'C101-C1, C102-C3, C103-C2, C105-C3', 'C201-C1, C204-C2'),
-(003, 'C102-C1, C103-C2, C104-C4, C105-C3', 'C201-C1'),
-(004, 'C103-C2, C104-C2, C105-C3', 'C205-C2'),
+(001, 'C101-C1, C102-C2, C103-C2', 'C201-C2, C202-C1'),
+(002, 'C101-C1, C104-C2', 'C201-C1, C204-C2'),
+(003, 'C101-C1, C103-C2', 'C201-C1'),
+(004, 'C101-C2, C102-C2, C103-C1, C105-C3', 'C205-C2'),
 (005, 'C101-C3, C103-C2, C104-C1, C105-C2', 'C203-C2');
 
 
@@ -168,7 +168,7 @@ INSERT INTO `course_details` (`course_id`,`course_name`,`course_type`, `course_p
 ('C202', 'Intermediate Engineering Mathematics', 'Biddable', 'C102', 'This is a Year1 course which requires the completion of C102 Basic Engineering Mathematics','C202-C1, C202-C2', 'C202-L1, C202-L2', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 ('C203', 'Engineering Project Management', 'Biddable', 'C103' , 'This is a Year1 course which requires the completion of C103 Introduction to Engineering','C203-C1, C203-C2', 'C203-L1, C203-L2, C203-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 ('C204', 'Applications of Electrical Engineering', 'Biddable', 'C104', 'This is a Year1 course which requires the completion of C104 Principles of Electrical Engineering', 'C204-C1, C204-C2', 'C204-L1, C204-L2', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
-('C205', 'Consumer Psychology', 'Biddable', 'C105','This is a Year1 course which requires the completion of C105 Engineering Design and Solutions', 'C205-C1, C205-C2', 'C205-L1, C205-L2, C205-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C205', 'Consumer Psychology', 'Biddable', 'C102','This is a Year1 course which requires the completion of C105 Engineering Design and Solutions', 'C205-C1, C205-C2', 'C205-L1, C205-L2, C205-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 
 ('C301', 'Advanced Mathematics', 'Biddable', 'C101, C201', 'This is a biddable course, please refer to OASIS for more information', 'C301-C1, C301-C2, C301-C2', 'C301-L1, C301-L2, C301-L3, C301-L4', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 ('C302', 'Advanced Engineering Mathematics', 'Biddable', 'C102, C202', 'This is a biddable course, please refer to OASIS for more information', 'C302-C1, C302-C2, C302-C3', 'C302-L1, C302-L2', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
@@ -238,7 +238,6 @@ INSERT INTO `course_class` (`course_class_id`,`course_id`, `seats_available`) VA
 
 
 
-
 -- --------------------------------------------------------
 -- -----------------------------------------------------
 -- Course's Lesson Table
@@ -304,6 +303,39 @@ INSERT INTO `course_lesson` (`course_lesson_id`,`course_id`, `pdf_material`,`ppt
 ('C305-L2', 'C305', 'pdf5.pdf', 'ppt3.pptx, ppt4.pptx', 'vid1.mp4, vid3.mp4', 'doc1.docx, doc2.docx'),
 ('C305-L3', 'C305', 'pdf1.pdf, pdf5.pdf', 'ppt1.pptx, ppt2.pptx', 'vid1.mp4, vid2.mp4, vid3.mp4', 'doc1.docx, doc2.docx, doc3.docx');
 
+
+
+
+
+
+-- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Table `progress`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `progress` (
+
+  `progress_id` varchar(64) NOT NULL UNIQUE,
+  `engineer_id` INT NOT NULL, 
+  `course_id` varchar(64) NOT NULL, 
+  `lesson` varchar(300) NOT NULL,
+  `pdf_material` varchar(300) DEFAULT NULL,
+  `ppt_material` varchar(300) DEFAULT NULL,
+  `video_material` varchar(300) DEFAULT NULL,
+  `doc_material` varchar(300) DEFAULT NULL,
+  `quiz_id` varchar(20)  DEFAULT NULL,
+  PRIMARY KEY (`progress_id`))
+  
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO `progress` (`progress_id`, `engineer_id`, `course_id`, `lesson`) VALUES
+('1 C201-C2', 1, 'C201', 'C201-L1'),
+('1 C204-C2', 1, 'C204', 'C204-L1'),
+('2 C201-C1', 2, 'C201', 'C201-L1'),
+('2 C204-C2', 2, 'C204', 'C204-L1'),
+('3 C201-C1', 3, 'C201', 'C201-L1'),
+('4 C205-C2', 4, 'C205', 'C205-L1'),
+('5 C203-C2', 5, 'C203', 'C203-L1');
 
 
 
