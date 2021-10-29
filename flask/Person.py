@@ -62,6 +62,64 @@ class Engineer(db.Model):
         return result
 
 
+class Trainers(db.Model):
+    __tablename__ = 'trainers'
+
+    trainer_id = db.Column(db.Integer, primary_key=True)
+    trainer_course_class_id= db.Column(db.String(200))
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'enrollment'
+    }
+
+    def to_dict(self):
+        """
+        'to_dict' converts the object into a dictionary,
+        in which the keys correspond to database columns
+        """
+        columns = self.__mapper__.column_attrs.keys()
+        result = {}
+        for column in columns:
+            result[column] = getattr(self, column)
+        return result
+    
+    def get_trainer_id(self):
+        return self.trainer_id
+    
+    def get_trainer_course_class_id(self):
+        return self.trainer_course_class_id
+
+
+
+class HR(db.Model):
+    __tablename__ = 'hr'
+
+    hr_id = db.Column(db.Integer, primary_key=True)
+    courses_assigned= db.Column(db.String(200))
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'hr'
+    }
+
+    def to_dict(self):
+        """
+        'to_dict' converts the object into a dictionary,
+        in which the keys correspond to database columns
+        """
+        columns = self.__mapper__.column_attrs.keys()
+        result = {}
+        for column in columns:
+            result[column] = getattr(self, column)
+        return result
+    
+    def get_hr_id(self):
+        return self.trainer_id
+    
+    def get_courses_assigned(self):
+        return self.courses_assigned
+
+
+
 
 @app.route("/person")
 def get_all_person():
@@ -138,6 +196,49 @@ def get_engineer_byID(engineer_id):
     ), 404
 
 
+@app.route("/trainer")
+def trainers():
+    trainer_list = Trainers.query.all()
+    return jsonify(
+        {
+            "data": [trainer.to_dict() for trainer in trainer_list]
+        }
+    ), 200
+
+@app.route("/trainer/<trainer_id>")
+def trainer_by_id(trainer_id):
+    trainer_course_class_list = Trainers.query.filter_by(trainer_id=trainer_id).first()
+    if trainer_course_class_list:
+        return jsonify({
+            "data": trainer_course_class_list.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "Trainer not found."
+        }), 404
+
+
+
+@app.route("/hr")
+def hr():
+    hr_list = HR.query.all()
+    return jsonify(
+        {
+            "data": [hr.to_dict() for hr in hr_list]
+        }
+    ), 200
+
+@app.route("/hr/<hr_id>")
+def hr_by_id(hr_id):
+    hr_course_list = HR.query.filter_by(hr_id=hr_id).first()
+    if hr_course_list:
+        return jsonify({
+            "data": hr_course_list.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "HR not found."
+        }), 404
 
 
 if __name__ == '__main__':
