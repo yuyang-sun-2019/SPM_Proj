@@ -147,8 +147,12 @@
     methods:{
       assign: function() {
         this.class = document.querySelector('input[name="flexRadioDefault"]:checked').value;
-        alert(this.class)
-        alert(engineer_id)
+        // alert(this.class)
+        // alert(engineer_id)
+        var course = this.class.split("-")[0]
+        var lesson = course + "-L1"
+        var progress = engineer_id + ' ' + this.class
+        
         axios.post('action.php',{
                 action: 'update_eng',
                 id: this.class,
@@ -160,6 +164,17 @@
         axios.post('action.php',{
                 action: 'update_seat',
                 id: this.class
+              }).then(function(response){
+                console.log(response.data)
+                  alert(response.data.message)
+              })
+              axios.post('action.php',{
+                action: 'update_progress',
+                id: progress,
+                course_id: course,
+                course_lesson_id: lesson,
+                engineer_id: engineer_id,
+                
               }).then(function(response){
                 console.log(response.data)
                   alert(response.data.message)

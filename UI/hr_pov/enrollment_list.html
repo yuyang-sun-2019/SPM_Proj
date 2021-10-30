@@ -157,14 +157,56 @@
             location.reload()
           }
       },
+      
       accept: function(){
+        
         const values = Array
             .from(document.querySelectorAll('input[type="checkbox"]'))
             .filter((checkbox) => checkbox.checked)
             .map((checkbox) => checkbox.value);
-            console.log(values)
+            // console.log(values)
         
+        if(confirm("Are you sure you want to accept this record?")){
+          for(var i =0; i<values.length; i++){
+            
+            var engineer_id = enroll.enrollment_list[i].engineer_id;
+            var course = enroll.enrollment_list[i].course_id;
+            // console.log(enroll.enrollment_list[i])
+            var course_class = enroll.enrollment_list[i].course_class_id;
+            var lesson = course + "-L1";
+            var progress = engineer_id + ' ' + course_class ;
+
+            alert(progress)
+            
+            
+            axios.post('action.php',{
+                action: 'update',
+                id: values[i],
+                e_id: engineer_id,
+              }).then(function(response){
+                console.log(response)
+                // console.log(enroll.enrollment_list[0].engineer_id);
+                
+                // console.log(response.data)
+                  alert(response.data.message)
+              })
+              axios.post('action.php',{
+                action: 'update_progress',
+                id: progress,
+                course_id: course,
+                course_lesson_id: lesson,
+                engineer_id: engineer_id,
+                
+              }).then(function(response){
+                console.log(response.data)
+                  alert(response.data.message)
+              })
+
+
+        }
+        location.reload()
       }
+    }
       
       
         
