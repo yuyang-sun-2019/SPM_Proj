@@ -55,6 +55,20 @@ if($recieved_data -> action == 'update_eng'){
     echo json_encode($output);
 }
 
+// Update Progress
+if($recieved_data -> action == 'update_progress'){
+    $query ="
+    INSERT INTO progress (progress_id, engineer_id, course_id, lesson, pdf_material, ppt_material, video_material, doc_material, quiz_id) VALUES ('".$recieved_data->id."', '".$recieved_data->engineer_id."', '".$recieved_data->course_id."', '".$recieved_data->course_lesson_id."', NULL, NULL, NULL, NULL, NULL);
+    ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+
+    $output = array(
+        'message' => 'Engineer progress has been updated.'
+    );
+    echo json_encode($output);}
+
+
 
 
 ?>
