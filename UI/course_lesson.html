@@ -73,13 +73,11 @@
 
 <br><br>
 <div id="course_lesson" class="container">
-  <div v-for="record in lessons">
-      <h3>{{record.split('-')[0]}}  -  <i>{{record}} </i>    &nbsp&nbsp
+      <h3>{{lesson}} </i>    &nbsp&nbsp
       <a v-bind:href="'./lesson.html?id='+ record">View the Lesson</a></h3>
       <br>
   </div>
 </div>
-
 
   <script>
     function getParameterByName(name, url) {
@@ -97,6 +95,9 @@
     var course_id = course_class.split('-')[0]
 
     var course_lessons = []
+  
+    var course_lessons = []
+    var progress_id = engineer_id + ' ' + course_class
     
 
     const vm = new Vue({
@@ -105,11 +106,10 @@
               lessons: []
           },
           mounted: function() {
-              axios.get('http://localhost:5001/course/'+course_id)
+              axios.get('http://localhost:5001/course_progress/'+progress_id)
                   .then(response => {
-                      this.lessons = response.data.data['lessons'];
-                      this.lessons = this.lessons.split(', ')
-                      course_lessons = this.lessons
+                      this.lesson = response.data.data['lesson'];
+                      course_lesson = this.lesson
                   })
                   .catch(error => alert(error));
           }

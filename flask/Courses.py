@@ -148,6 +148,64 @@ class Course_Lesson(db.Model):
     
     def get_PPTMaterial(self):
         return self.ppt_material
+
+class Course_Progress(db.Model):
+    __tablename__ = 'progress'
+
+    progress_id = db.Column(db.String(64), primary_key=True)
+    engineer_id = db.Column(db.Integer())
+    course_id = db.Column(db.String(300))
+    lesson = db.Column(db.String(300))
+    pdf_material = db.Column(db.String(300))
+    ppt_material = db.Column(db.String(300))
+    video_material = db.Column(db.String(300))
+    doc_material = db.Column(db.String(300))
+    quiz_id = db.Column(db.String(20))
+    
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'course_details'
+    }
+
+    def to_dict(self):
+        """
+        'to_dict' converts the object into a dictionary,
+        in which the keys correspond to database columns
+        """
+        columns = self.__mapper__.column_attrs.keys()
+        result = {}
+        for column in columns:
+            result[column] = getattr(self, column)
+        return result
+    
+    def get_progress_id(self):
+        return self.progress_id
+
+    def get_engineer_id(self):
+        return self.engineer_id
+    
+    def get_course_id(self):
+        return self.course_id
+    
+    def get_lesson(self):
+        return self.lesson
+
+    def get_pdf_material(self):
+        return self.pdf_material
+
+    def get_ppt_material(self):
+        return self.ppt_material
+
+    def get_video_material(self):
+        return self.video_material
+    
+    def get_doc_material(self):
+        return self.doc_material
+
+    def get_quiz_id(self):
+        return self.quiz_id
+    
+
     
 
 
@@ -221,6 +279,19 @@ def course_lesson_by_id(course_lesson_id):
         return jsonify({
             "message": "Course Lesson not found."
         }), 404
+
+@app.route("/course_progress/<progress_id>")
+def courses_progress(progress_id):
+    course_progress = Course_Progress.query.filter_by(progress_id=progress_id).first()
+    if course_progress:
+        return jsonify({
+            "data": course_progress.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "Course progress not found."
+        }), 404
+    
 
 
 
