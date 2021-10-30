@@ -70,14 +70,15 @@
   </nav>
 </div>
 
-
 <br><br>
 <div id="course_lesson" class="container">
-      <h3>{{lesson}} </i>    &nbsp&nbsp
+  <div v-for="record in lessons">
+      <h3>{{record.split('-')[0]}}  -  <i>{{record}} </i>    &nbsp&nbsp
       <a v-bind:href="'./lesson.html?id='+ record">View the Lesson</a></h3>
       <br>
   </div>
 </div>
+
 
   <script>
     function getParameterByName(name, url) {
@@ -108,11 +109,12 @@
           mounted: function() {
               axios.get('http://localhost:5001/course_progress/'+progress_id)
                   .then(response => {
-                      this.lesson = response.data.data['lesson'];
-                      course_lesson = this.lesson
+                      this.lessons = response.data.data['lesson'];
+                      this.lessons = this.lessons.split(', ')
+                      course_lesson = this.lessons
                   })
                   .catch(error => alert(error));
-          }
+          
       });
 
   </script>
