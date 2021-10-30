@@ -74,7 +74,7 @@
                 <th>Course Name</th>
                 <th>Course Type</th>
                 <th>Course Prerequisite</th>
-                <th>Assign this Class?</th>
+               
             </tr>
         </thead>
         <tbody>
@@ -84,7 +84,7 @@
                 <td>{{ record.course_type }}</td>
                 <td v-if="record.course_prerequisite == null">None</td>
                 <td v-else="record.course_prerequisite == null">{{ record.course_prerequisite }}</td>
-                <td><input type="checkbox" name="flexCheckBoxDefault" :value="record.enrollment_id"/></td>
+              
             </tr>
         </tbody>
     </table>
