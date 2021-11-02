@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Engineer Homepage</title>
+    <title>Reassign Engineers</title>
 
     <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -17,18 +17,17 @@
 
   <!-- Latest compiled and minified JavaScript -->
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
 
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-      crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 </head>
 <body>
@@ -65,50 +64,42 @@
 </div>
 
 
-<br><br>
-<div class="container" id="engineers">
-  <table class='table table-striped' border='2'>
-    <thead class='thead-dark'>
-        <tr>
-            <th style="text-align: center;">Engineer ID</th>
-            <th>Completed Courses</th>
-            <th>Inprogress Courses</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr v-for="record in engineer">
-          <td style="text-align: center;">
-            <a v-bind:href="'./assign_course.html?id='+ record.engineer_id"><strong>Engineer ID {{ record.engineer_id }}</strong></a>
-          </td>
-          <td>{{record.engineer_completed_courses}}</td>
-          <td>{{record.engineer_inprogress_courses}}</td>
-        </tr>
-    </tbody>
-  </table>
-</div>
+
+  <!-- See the list of Courses-->
+  <div id="main-container" class="container">
+
+    <h1 class="display-4">View List of Courses</h1>
+    <br></br>
+    <h3><b>Course ID</b></h3>
+    <br>
+    <table class='table table-striped' border='2'>
+    <tr v-for="record in hr_courses" style="font-size: large;">
+      <td><a v-bind:href="'./reassign_englist.html?id='+ record"><strong>{{ record }}</strong></a></td>
+    </tr>
+    </table>
+  </div>
 
 
   <script>
-
+    
     var hr_id = sessionStorage.getItem("user_id");
 
-    const vm = new Vue({
-          el: '#engineers',
+      const vm = new Vue({
+          el: '#main-container',
           data: {
-              engineer: [],
-              courses: []
+              hr_courses: [],
           },
           mounted: function() {
-              axios.get('http://localhost:5002/engineer')
+            axios.get('http://localhost:5002/hr/'+hr_id)
                   .then(response => {
-                      this.engineer = response.data.data.Person;
-                      console.log(this.engineer)
+                      this.hr_courses = response.data.data['courses_assigned'].split(', '); 
+                      console.log(this.hr_courses)
                   })
                   .catch(error => alert(error));
-          }
-      });
+          },
+      })
 
-  </script>
   
-</body>
+  </script>
 
+</body>

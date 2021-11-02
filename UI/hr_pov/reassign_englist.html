@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Reassign Engineers</title>
+
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+
+    <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+
+<!-- Nav Bar -->
+<div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <h2 style="margin-left: 1em;">HR's Portal</h2>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./engineer_homepage.html" style="font-size: medium; margin-left: 0.5em;">HomePage</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./engineer_list.html" style="font-size: medium; margin-left: 0.5em">Assign Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./enrollment_list.html" style="font-size: medium; margin-left: 0.5em">Course Enrollment Applications</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./reassign_eng.html" style="font-size: medium; margin-left: 0.5em">Reassign Engineers</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-log-out" style="color: grey; size: 3em;"></span> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+
+
+  <!-- See the list of Courses-->
+  <div id="main-container" class="container">
+
+    <h1 class="display-4">View List of Engineers to be Reassigned</h1>
+    <br></br>
+    <table id="consultationsTable" class='table table-striped' border='2'>
+        <thead class='thead-dark'>
+            <tr style="font-size: medium;">
+                <th>Engineer ID</th>
+                <th>Reassign</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="record in engineers" style="font-size: medium;">
+                <td style="padding-left: 3em;"><strong>{{ record }}</strong></td>
+                <td><input type="checkbox" name="flexCheckBoxDefault" :value="record"/></td>
+            </tr>
+        </tbody>
+    </table>
+
+  </div>
+
+  <div id="enroll" style="justify-content: center; display: flex;" class="container">
+    <input type="button" style= "margin:0 auto;
+      display:block; padding: 10px 20px;" class="btn btn-dark" value="Assign" id="submit1" @click="reassign()"/>
+  </div>
+
+  <script>
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    var course_id = getParameterByName('id');
+    var hr_id = sessionStorage.getItem("user_id");
+    
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    dateTime = new Date(dateTime)
+    var course_deadline = ''
+
+      const vm = new Vue({
+          el: '#main-container',
+          data: {
+            all_engineers: [],
+            engineers: [],
+            course_deadline: '',
+            last_lesson: ''
+          },
+          mounted: function() {
+            axios.get('http://localhost:5001/course/'+course_id)
+                  .then(response => {
+                    var end_date = response.data.data['end_date']
+                    var end = new Date(end_date)
+                    course_deadline = new Date(end)
+                    var lessons = response.data.data['lessons']
+                    if(!lessons.includes(',')){
+                      this.last_lesson = [lessons]
+                    }
+                    else{
+                      this.last_lesson = lessons.split(', ')
+                      this.last_lesson = this.last_lesson[this.last_lesson.length - 1]
+                    }
+                  })
+                  .catch(error => alert(error));
+          
+            
+            axios.get('http://localhost:5002/engineer')
+                  .then(response => {
+                      this.all_engineers = response.data.data['Person']; 
+                     
+                      for(var i = 0; i<this.all_engineers.length; i++){
+                        if(!this.all_engineers[i]['engineer_inprogress_courses'].includes(',')){
+                          var courses_inprogress = [this.all_engineers[i]['engineer_inprogress_courses']];
+                        }
+                        else{
+                          var courses_inprogress = this.all_engineers[i]['engineer_inprogress_courses'].split(', ');
+                        }
+                        const engineer_id = this.all_engineers[i]['engineer_id']
+                        for(var j = 0; j<courses_inprogress.length; j++){
+                          if(courses_inprogress[j].split('-')[0] == course_id){
+                            if(dateTime >= course_deadline){
+                              var progress_id = this.all_engineers[i]['engineer_id'] + ' ' + courses_inprogress[j]
+                              axios.get('http://localhost:5001/course_progress/'+progress_id)
+                                .then(response => {
+                                  var pdf = response.data.data['pdf_material'];
+                                  var ppt = response.data.data['ppt_material'];
+                                  var doc = response.data.data['doc_material'];
+                                  var video = response.data.data['video_material'];
+                                  var lessons = response.data.data['lesson'];
+                                  if(!lessons.includes(',')){
+                                    var lesson = [lessons]
+                                  }
+                                  else{
+                                    var lesson = lessons.split(', ')
+                                    lesson = [lesson[lesson.length - 1]]
+                                  }
+                                  if(lesson != this.last_lesson){
+                                    this.engineers.push(engineer_id)
+                                  }
+                                  else{
+                                    var pdf_count = get_count(pdf)
+                                    var ppt_count = get_count(ppt)
+                                    var doc_count = get_count(doc)
+                                    var video_count = get_count(video)
+                                    
+                                    axios.get('http://localhost:5001/course_lesson/'+this.last_lesson)
+                                    .then(response => {
+                                      var pdf_material = response.data.data['pdf_material']
+                                      var ppt_material = response.data.data['ppt_material']
+                                      var video_material = response.data.data['video_material']
+                                      var doc_material = response.data.data['doc_material']
+                                      
+                                      var pdf_material_count = get_count(pdf_material)
+                                      var ppt_material_count = get_count(ppt_material)
+                                      var video_material_count = get_count(video_material)
+                                      var doc_material_count = get_count(doc_material)
+
+                                      if(pdf_count!=pdf_material_count || ppt_count!=ppt_material_count || doc_count!=doc_material_count || video_material!=video_material_count){
+                                        this.engineers.push(engineer_id)
+                                      }
+                                    })
+                                    .catch(error => alert(error));
+                                  }
+                                })
+                                .catch(error => alert(error));
+                            }
+                          }
+                        }
+                      }
+                  })
+                  .catch(error => alert(error));
+          },
+      })
+
+
+    function get_count(material) {
+      if(material == null){
+        var count = 0
+      }
+      else if(!material.includes(',')){
+        var count = 1
+      }
+      else{
+        var count = material.split(', ').length
+      }    
+      return count
+    }
+
+    var course_class = ''
+
+    var enroll = new Vue({
+    el: '#enroll',
+    data: {
+        courses_inprogress: [],
+    },
+    methods:{
+      reassign: function() {
+        const values = Array
+            .from(document.querySelectorAll('input[type="checkbox"]'))
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+        
+        if(confirm("Are you sure you want to reassign this course for the selected Engineers?")){
+          for(var i=0; i<values.length; i++){
+            var course_lesson = course_id + '-L1'
+            const engineer_id = values[i]
+            
+            axios.get('http://localhost:5002/engineer/'+values[i])
+              .then(response => {
+                this.courses_inprogress = response.data.data['engineer_inprogress_courses']
+                if(!this.courses_inprogress.includes(',')){
+                  var course_classes = [this.courses_inprogress]
+                }
+                else{
+                  var course_classes = this.courses_inprogress.split(', ')
+                }
+                for(var j=0; j<course_classes.length; j++){
+                  if(course_classes[j].split('-')[0] == course_id){
+                    var course_class = course_classes[j]
+                  }
+                }
+                const progress_id = engineer_id + ' ' + course_class 
+                console.log(course_lesson)
+                console.log(progress_id)
+
+                axios.post('action.php',{
+                action: 'reassign_course',
+                id: progress_id,
+                course_lesson: course_lesson,
+                
+                }).then(function(response){
+                  console.log(response.data)
+                    alert(response.data.message)
+                })
+
+              })
+              .catch(error => alert(error));
+            
+             
+
+          }
+        }
+      }
+         
+  }
+ 
+});
+  
+  </script>
+
+</body>

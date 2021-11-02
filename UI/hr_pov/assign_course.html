@@ -51,6 +51,9 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="./enrollment_list.html" style="font-size: medium; margin-left: 0.5em">Course Enrollment Applications</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./reassign_eng.html" style="font-size: medium; margin-left: 0.5em">Reassign Engineers</a>
+          </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-log-out" style="color: grey; size: 3em;"></span> Logout</a></li>
@@ -162,18 +165,6 @@
       });
 
 
-  
-   
-
-
-
-
-
-
-
-
-
-
 
   var enroll = new Vue({
     el: '#enroll',
@@ -209,9 +200,7 @@
             .map((checkbox) => checkbox.value);
             console.log(values)
       }
-      
-      
-        
+    
     }
  
   });
