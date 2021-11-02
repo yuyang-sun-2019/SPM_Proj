@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Your Completed Courses</title>
+    <title>Engineer Homepage</title>
 
     <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -28,6 +28,7 @@
       crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 
 </head>
 <body>
@@ -69,69 +70,51 @@
   </nav>
 </div>
 
-          
 
-<!-- View List of Courses -->
-<div class="container" id='app'>
-  <div>
-  <div class="panel panel-default" v-for="record in course_list">
-    <p><course-comp :id="record"> </course-comp></p>
-  </div>
+<br><br>
+<div id="course_lesson" class="container">
+  <div v-for="record in lessons">
+      <h3>{{record.split('-')[0]}}  -  <i>{{record}} </i>    &nbsp&nbsp
+      <a v-bind:href="'./lesson.html?id='+ record">View the Lesson</a></h3>
+      <br>
   </div>
 </div>
 
 
+  <script>
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
 
-<script>
-  var engineer_id = sessionStorage.getItem("user_id");
+    var engineer_id = sessionStorage.getItem("user_id");
+    var course_class = getParameterByName('id');
+    var course_id = course_class.split('-')[0]
 
-  const vm = new Vue({
-        el: '#app',
-        data: {
-            course_list: [],
-            courses_descr: []
-        },
-        mounted: function() {
-          axios.get('http://localhost:5002/engineer/'+engineer_id)
-                .then(response => {
-                    this.course_list = response.data.data['engineer_completed_courses'].split(', ');
-                    console.log(this.course_list)
-                })
-                .catch(error => alert(error));
-        }
-    });
+    var course_lessons = []
+    
+
+    const vm = new Vue({
+          el: '#course_lesson',
+          data: {
+              lessons: []
+          },
+          mounted: function() {
+              axios.get('http://localhost:5001/course/'+course_id)
+                  .then(response => {
+                      this.lessons = response.data.data['lessons'];
+                      this.lessons = this.lessons.split(', ')
+                      course_lessons = this.lessons
+                  })
+                  .catch(error => alert(error));
+          }
+      });
+
+  </script>
   
-    Vue.component('course-comp', {
-    props: ['id'],
-    template: `<div class="panel-heading"><h3><a v-bind:href="'./compcourse_lesson.html?id='+ this.course_class_id">{{course_id}}  -  {{course_name}}</a></h3>
-      <br>
-      <div><h5>{{course_brief}}</h5></div>
-      </div>`,
-    data: function () {
-        return {
-            course_name: '',
-            course_brief: '',
-            course_id: '',
-            course_class_id: '',
-        };
-    },
-    created: function () {
-        this.course_class_id = this.id
-        this.course_id = this.id.split('-')[0]
-        axios.get('http://localhost:5001/course/' + this.course_id)
-            .then(response => {
-                this.course_id = response.data.data.course_id;
-                this.course_name = response.data.data.course_name;
-                this.course_brief = response.data.data.course_brief;
-            });
-    },
-  });
-
-
-</script>
-
-
 </body>
-</html>
-          
-          
