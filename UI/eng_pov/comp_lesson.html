@@ -32,7 +32,7 @@
 
 </head>
 <body>
-
+  
 <!-- Nav Bar -->
 <div>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -71,11 +71,47 @@
 </div>
 
 
-<div id="main-container" class="container">  
-    <embed id="pdf_material" src="" type="application/pdf" width="100%" height="600px">
-</div>
+<br>
 
+  <!-- See the Lesson Materials-->
+  <div id="lesson_materials" class="container">
+    <h1><u>{{course_id}} &nbsp;  -  &nbsp;  <i>{{lesson_id}}</i></u></h1>
+    <br>
+    <br>
+    <h3><strong>View PDF Materials of {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in pdf_material">
+      <a v-bind:href="'./lesson_pdf.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">View the PDF</h6></a>
+      <br>
+    </div>
+    <br>
+    <br>
+    <h3><strong>View Video Materials of {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in video_material">
+      <a v-bind:href="'./lesson_video.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">View the Video</h6></a>
+      <br>
+    </div>
+    <br>
+    <br>
+    <h3><strong>Download Powerpoint Materials of {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in ppt_material">
+      <a v-bind:href="'./lesson_ppt.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the PowerPoint Slides</h6></a>
+      <br>
+    </div>
+    <br>
+    <br>
+    <h3><strong>Download Document Materials of {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in doc_material">
+      <a v-bind:href="'./lesson_docx.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the Document</h6></a>
+      <br>
+    </div>
 
+  </div>
+
+  <br>
 
   
   <script>
@@ -92,12 +128,32 @@
 
     var lesson_id = getParameterByName('id');
     var engineer_id = sessionStorage.getItem("user_id");
+    
+    const vm = new Vue({
+          el: '#lesson_materials',
+          data: {
+              course_id: '',
+              lesson_id: '',
+              pdf_material: [],
+              ppt_material: [],
+              video_material: [],
+              doc_material: [],
+          },
+          mounted: function() {
+              axios.get('http://localhost:5001/course_lesson/'+lesson_id)
+                  .then(response => {
+                      this.course_id = response.data.data['course_id'];
+                      this.lesson_id = response.data.data['course_lesson_id']
+                      this.pdf_material = response.data.data['pdf_material'].split(', ')
+                      this.ppt_material = response.data.data['ppt_material'].split(', ')
+                      this.video_material = response.data.data['video_material'].split(', ')
+                      this.doc_material = response.data.data['doc_material'].split(', ')
+                      console.log(this.ppt_material)
+                  })
+                  .catch(error => alert(error));
+          }
+      });
 
-    pdf_id = '../../files/'+lesson_id
-    console.log(pdf_id)
-    const pdf_embed = document.getElementById('pdf_material')
-    pdf_embed.src = pdf_id
-   
 
   </script>
   

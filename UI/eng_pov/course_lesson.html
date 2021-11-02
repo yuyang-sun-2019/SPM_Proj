@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Engineer Homepage</title>
+    <title>Engineer course lesson</title>
 
     <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -70,7 +70,6 @@
   </nav>
 </div>
 
-
 <br><br>
 <div id="course_lesson" class="container">
   <div v-for="record in lessons">
@@ -95,29 +94,30 @@
     var engineer_id = sessionStorage.getItem("user_id");
     var course_class = getParameterByName('id');
     var course_id = course_class.split('-')[0]
+    sessionStorage.setItem('course_class',course_class);
 
     var course_lessons = []
+  
+    var course_lessons = []
+    var progress_id = engineer_id[2] + ' ' + course_class
+    //alert(progress_id)
     
+
     const vm = new Vue({
           el: '#course_lesson',
           data: {
               lessons: []
           },
           mounted: function() {
-              axios.get('http://localhost:5001/course/'+course_id)
+              axios.get('http://localhost:5001/course_progress/'+progress_id)
                   .then(response => {
-                      this.lessons = response.data.data['lessons'];
+                      this.lessons = response.data.data['lesson'];
                       this.lessons = this.lessons.split(', ')
-                      course_lessons = this.lessons
+                      course_lesson = this.lessons
                   })
                   .catch(error => alert(error));
-<<<<<<< Updated upstream:UI/course_lesson.html
-          }
-      });
-=======
           
-      }});
->>>>>>> Stashed changes:UI/eng_pov/course_lesson.html
+          }});
 
   </script>
   
