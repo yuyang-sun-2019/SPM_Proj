@@ -81,7 +81,7 @@
     <h3><strong>View PDF Materials of {{lesson_id}}</strong></h3>
     <br>
     <div v-for="record in pdf_material">
-      <a v-bind:href="'./lesson_pdf.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">View the PDF</h6></a>
+      <a v-bind:href="'./lesson_pdf.html?id='+ record" target="_blank" @click="append(record)"><h6 style="font-size:2em; margin-left: 1em;">View the PDF</h6></a>
       <br>
     </div>
     <br>
@@ -89,7 +89,7 @@
     <h3><strong>View Video Materials of {{lesson_id}}</strong></h3>
     <br>
     <div v-for="record in video_material">
-      <a v-bind:href="'./lesson_video.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">View the Video</h6></a>
+      <a v-bind:href="'./lesson_video.html?id='+ record" target="_blank" @click="append(record)"><h6 style="font-size:2em; margin-left: 1em;">View the Video</h6></a>
       <br>
     </div>
     <br>
@@ -97,7 +97,7 @@
     <h3><strong>Download Powerpoint Materials of {{lesson_id}}</strong></h3>
     <br>
     <div v-for="record in ppt_material">
-      <a v-bind:href="'./lesson_ppt.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the PowerPoint Slides</h6></a>
+      <a v-bind:href="'./lesson_ppt.html?id='+ record" target="_blank" @click="append(record)"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the PowerPoint Slides</h6></a>
       <br>
     </div>
     <br>
@@ -105,7 +105,7 @@
     <h3><strong>Download Document Materials of {{lesson_id}}</strong></h3>
     <br>
     <div v-for="record in doc_material">
-      <a v-bind:href="'./lesson_docx.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the Document</h6></a>
+      <a v-bind:href="'./lesson_docx.html?id='+ record" target="_blank" @click="append(record)"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the Document</h6></a>
       <br>
     </div>
 
@@ -128,6 +128,7 @@
 
     var lesson_id = getParameterByName('id');
     var engineer_id = sessionStorage.getItem("user_id");
+    var course_class = sessionStorage.getItem("course_class");
     
     const vm = new Vue({
           el: '#lesson_materials',
@@ -138,6 +139,10 @@
               ppt_material: [],
               video_material: [],
               doc_material: [],
+              pdf_materials: [],
+              ppt_materials: [],
+              video_materials: [],
+              doc_materials: []
           },
           mounted: function() {
               axios.get('http://localhost:5001/course_lesson/'+lesson_id)
@@ -148,11 +153,151 @@
                       this.ppt_material = response.data.data['ppt_material'].split(', ')
                       this.video_material = response.data.data['video_material'].split(', ')
                       this.doc_material = response.data.data['doc_material'].split(', ')
-                      console.log(this.ppt_material)
                   })
                   .catch(error => alert(error));
+          },
+          methods:{
+            append(record){
+              
+              var course_material = ""
+              if(record.split('.')[1] == 'pdf'){
+                course_material = 'pdf_material'
+              }
+              else if(record.split('.')[1] == 'pptx'){
+                course_material = 'ppt_material'
+              }
+              else if(record.split('.')[1] == 'mp4'){
+                course_material = 'video_material'
+              }
+              else{
+                course_material = 'doc_material'
+              }
+              var progress_id = engineer_id[2] + " " + course_class
+              axios.get('http://localhost:5001/course_progress/'+progress_id)
+                  .then(response => {
+                      var pdf = response.data.data['pdf_material'];
+                      var ppt = response.data.data['ppt_material'];
+                      var doc = response.data.data['doc_material'];
+                      var video = response.data.data['video_material'];
+                      var lesson = response.data.data['lesson'];
+                      if(course_material == 'pdf_material'){
+                        check_post_material(pdf,record,course_material,progress_id)
+                      }
+                      else if(course_material == 'ppt_material'){
+                        check_post_material(ppt,record,course_material,progress_id)
+                      }
+                      else if(course_material == 'video_material'){
+                        check_post_material(video,record,course_material,progress_id)
+                      }
+                      else if(course_material == 'doc_material'){
+                        check_post_material(doc,record,course_material,progress_id)
+                      }
+                      
+                      
+                      // Check if all the course materials are accessed
+                     
+                      axios.get('http://localhost:5001/course_lesson/'+lesson_id)
+                      .then(response => {
+                        
+                        // Check if the material has only value
+                        this.pdf_materials = response.data.data['pdf_material']
+                        var pdf_material = array_material(this.pdf_materials)
+                         
+                        this.ppt_materials = response.data.data['ppt_material']
+                        var ppt_material = array_material(this.ppt_materials)
+                          
+                        this.video_materials = response.data.data['video_material']
+                        var video_material = array_material(this.video_materials)
+                        
+                        this.doc_materials = response.data.data['doc_material']
+                        var doc_material = array_material(this.doc_materials)
+
+                        pdf = array_material(pdf)
+                        ppt = array_material(ppt)
+                        video = array_material(video)
+                        doc = array_material(doc)
+
+                        if(pdf_material.length == pdf.length && ppt_material.length == ppt.length && video_material.length == video.length && doc_material.length == doc.length){
+                            
+                            if(!lesson.includes(',')){
+                              var lesson_number = lesson_id.split('-')[1][1]
+                              var lesson_update_number = parseInt(lesson_number) + 1
+                              updated_lesson_id = lesson_id.split('-')[0] + '-' + lesson_id.split('-')[1][0] + (lesson_update_number)
+                              var lesson_update = lesson + ", " + updated_lesson_id
+                              update_lesson(lesson_update, progress_id)
+                            }
+                            else if(lesson.includes(",") && lesson.split(', ').includes(lesson_id)){
+                              var lesson_number = lesson_id.split('-')[1][1]
+                              lesson_update_number = parseInt(lesson_number) + 1
+                              updated_lesson_id = lesson_id.split('-')[0] + '-' + lesson_id.split('-')[1][0] + (lesson_update_number)
+                              var lesson_update = lesson + ", " + updated_lesson_id
+                              update_lesson(lesson_update, progress_id)
+                            }
+                          }
+                      })
+                      .catch(error => alert(error));
+
+
+                  })
+                  .catch(error => alert(error));
+            },
+            
           }
       });
+      
+      function check_post_material(progress_material, record, course_material, progress_id){
+        if(progress_material == null){
+          post_material(record,course_material,progress_id)
+        }
+        else if(progress_material.includes(',')){
+          var pdf_materials = progress_material.split(', ')
+          if(!pdf_materials.includes(record)){
+          var updated_pdf_materials = progress_material + ", " + record
+          post_material(updated_pdf_materials,course_material,progress_id)
+          }
+        }
+        else{
+          if(!progress_material.includes(record)){
+            var updated_pdf_materials = progress_material + ", " + record
+            post_material(updated_pdf_materials,course_material,progress_id)
+          }
+        }
+      }
+
+      function post_material(id, course_material, progress_id){
+                axios.post('../hr_pov/action.php',{
+                  action: 'update_progress_material',
+                  id: id,
+                  course_material: course_material,
+                  progress_id: progress_id
+                }).then(function(response){
+                    console.log(response.data)
+                    alert(response.data.message)
+                })
+      }
+    
+    function array_material(materials){
+        if(materials == null){
+            return [materials]
+        }
+        else if(!materials.includes(",")){
+            return [materials]
+        }
+        else{
+            return materials.split(', ')
+        }
+    }
+
+      function update_lesson(lesson, progress_id){
+                axios.post('../hr_pov/action.php',{
+                  action: 'update_progress_lesson',
+                  id: lesson,
+                  progress_id: progress_id,
+                }).then(function(response){
+                    console.log(response.data)
+                    alert(response.data.message)
+                })
+      }
 
 
   </script>

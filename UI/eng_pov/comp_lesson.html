@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Engineer course lesson</title>
+    <title>Engineer Homepage</title>
 
     <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -32,7 +32,7 @@
 
 </head>
 <body>
-
+  
 <!-- Nav Bar -->
 <div>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -70,16 +70,50 @@
   </nav>
 </div>
 
-<br><br>
-<div id="course_lesson" class="container">
-  <div v-for="record in lessons">
-      <h3>{{record.split('-')[0]}}  -  <i>{{record}} </i>    &nbsp&nbsp
-      <a v-bind:href="'./lesson.html?id='+ record">View the Lesson</a></h3>
+
+<br>
+
+  <!-- See the Lesson Materials-->
+  <div id="lesson_materials" class="container">
+    <h1><u>{{course_id}} &nbsp;  -  &nbsp;  <i>{{lesson_id}}</i></u></h1>
+    <br>
+    <br>
+    <h3><strong>View PDF Materials of {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in pdf_material">
+      <a v-bind:href="'./lesson_pdf.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">View the PDF</h6></a>
       <br>
+    </div>
+    <br>
+    <br>
+    <h3><strong>View Video Materials of {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in video_material">
+      <a v-bind:href="'./lesson_video.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">View the Video</h6></a>
+      <br>
+    </div>
+    <br>
+    <br>
+    <h3><strong>Download Powerpoint Materials of {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in ppt_material">
+      <a v-bind:href="'./lesson_ppt.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the PowerPoint Slides</h6></a>
+      <br>
+    </div>
+    <br>
+    <br>
+    <h3><strong>Download Document Materials of {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in doc_material">
+      <a v-bind:href="'./lesson_docx.html?id='+ record"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the Document</h6></a>
+      <br>
+    </div>
+
   </div>
-</div>
 
+  <br>
 
+  
   <script>
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
@@ -91,32 +125,35 @@
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
 
+
+    var lesson_id = getParameterByName('id');
     var engineer_id = sessionStorage.getItem("user_id");
-    var course_class = getParameterByName('id');
-    var course_id = course_class.split('-')[0]
-    sessionStorage.setItem('course_class',course_class);
-
-    var course_lessons = []
-  
-    var course_lessons = []
-    var progress_id = engineer_id[2] + ' ' + course_class
     
-
     const vm = new Vue({
-          el: '#course_lesson',
+          el: '#lesson_materials',
           data: {
-              lessons: []
+              course_id: '',
+              lesson_id: '',
+              pdf_material: [],
+              ppt_material: [],
+              video_material: [],
+              doc_material: [],
           },
           mounted: function() {
-              axios.get('http://localhost:5001/course_progress/'+progress_id)
+              axios.get('http://localhost:5001/course_lesson/'+lesson_id)
                   .then(response => {
-                      this.lessons = response.data.data['lesson'];
-                      this.lessons = this.lessons.split(', ')
-                      course_lesson = this.lessons
+                      this.course_id = response.data.data['course_id'];
+                      this.lesson_id = response.data.data['course_lesson_id']
+                      this.pdf_material = response.data.data['pdf_material'].split(', ')
+                      this.ppt_material = response.data.data['ppt_material'].split(', ')
+                      this.video_material = response.data.data['video_material'].split(', ')
+                      this.doc_material = response.data.data['doc_material'].split(', ')
+                      console.log(this.ppt_material)
                   })
                   .catch(error => alert(error));
-          
-          }});
+          }
+      });
+
 
   </script>
   
