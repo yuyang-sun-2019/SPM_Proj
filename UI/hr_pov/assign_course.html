@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Assign Courses</title>
+
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+
+    <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+
+<!-- Nav Bar -->
+<div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <h2 style="margin-left: 1em;">HR's Portal</h2>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./engineer_homepage.html" style="font-size: medium; margin-left: 0.5em;">HomePage</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./engineer_list.html" style="font-size: medium; margin-left: 0.5em">Assign Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./enrollment_list.html" style="font-size: medium; margin-left: 0.5em">Course Enrollment Applications</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-log-out" style="color: grey; size: 3em;"></span> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+
+
+  <!-- See the list of Courses-->
+  <div id="main-container" class="container">
+
+    <h1 class="display-4">View List of Courses</h1>
+    <br></br>
+    <table id="consultationsTable" class='table table-striped' border='2'>
+        <thead class='thead-dark'>
+            <tr style="font-size: medium;">
+                <th>Course ID</th>
+                <th>Course Name</th>
+                <th>Course Type</th>
+                <th>Course Prerequisite</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="record in assigned_clist" style="font-size: medium;">
+                <td><strong>{{ record.course_id }}</strong></td>
+                <td><a v-bind:href="'./assign_class.html?id='+ record.course_id">{{ record.course_name }}</a></td>
+                <td>{{ record.course_type }}</td>
+                <td v-if="record.course_prerequisite == null">None</td>
+                <td v-else="record.course_prerequisite == null">{{ record.course_prerequisite }}</td>
+              
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <input type="button" style= "margin:0 auto;
+      display:block; padding: 10px 20px;" class="btn btn-dark" value="Accept" id="submit1" @click="eligibility()"/>
+
+
+    
+  </div>
+ 
+  
+
+  <script>
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    var engineer_id = getParameterByName('id');
+    sessionStorage.setItem("engineer_id", engineer_id)
+    
+      const vm = new Vue({
+          el: '#main-container',
+          data: {
+              courses_list: [],
+              engineer_comp_class: [],
+              engineer_progr_class: [],
+              engineer_comp: [],
+              engineer_inprog: [],
+              assigned_clist: [],
+              course_id: '',
+              course_class: []
+          },
+          mounted: function() {
+            axios.get('http://localhost:5002/engineer/'+engineer_id)
+                  .then(response => {
+                    this.engineer_comp_class = response.data.data['engineer_completed_courses'].split(', ');
+                    for(var i =0; i<this.engineer_comp_class.length; i++){
+                      this.engineer_comp.push(this.engineer_comp_class[i].split('-')[0])
+                    }
+                    this.engineer_progr_class = response.data.data['engineer_inprogress_courses'].split(', ');
+                    for(var i =0; i<this.engineer_progr_class.length; i++){
+                      this.engineer_inprog.push(this.engineer_progr_class[i].split('-')[0])
+                    }
+                  })
+                  .catch(error => alert(error));
+              axios.get('http://localhost:5001/course')
+                  .then(response => {
+                      this.courses_list = response.data.data; 
+                      for(var i =0; i<this.courses_list.length; i++){
+                        if(this.courses_list[i]['course_type'] == 'Assigned'){
+                          if(!this.engineer_comp.includes(this.courses_list[i]['course_id']) && !this.engineer_inprog.includes(this.courses_list[i]['course_id']) &&
+                          (this.engineer_comp.includes(this.courses_list[i]['course_prerequisite']) || this.engineer_inprog.includes(this.courses_list[i]['course_prerequisite']) ||
+                          this.courses_list[i]['course_prerequisite'] == null)){
+                            this.assigned_clist.push(this.courses_list[i])
+                          }
+                        }
+                      }
+                  })
+                  .catch(error => alert(error));
+          },
+          method: {
+            eligibility: function(){
+              alert("Hey")
+            }
+          }
+      });
+
+
+  
+   
+
+
+
+
+
+
+
+
+
+
+
+  var enroll = new Vue({
+    el: '#enroll',
+    data: {
+        course_class: [],
+        course: ''
+
+    },
+    methods:{
+      reject: function() {
+        const values = Array
+            .from(document.querySelectorAll('input[type="checkbox"]'))
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+            console.log(values)
+          if(confirm("Are you sure you want to delete this record?")){
+            for(var i =0; i<values.length; i++){
+              axios.post('action.php',{
+                action: 'delete',
+                id: values[i]
+              }).then(function(response){
+                console.log(response.data)
+                  alert(response.data.message)
+              })
+            }
+            location.reload()
+          }
+      },
+      accept: function(){
+        const values = Array
+            .from(document.querySelectorAll('input[type="checkbox"]'))
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+            console.log(values)
+      }
+      
+      
+        
+    }
+ 
+  });
+
+  
+  </script>
+
+</body>

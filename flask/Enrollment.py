@@ -53,6 +53,15 @@ class Enrollment(db.Model):
 
 db.create_all()
 
+@app.route("/enrollment")
+def get_enrolllment():
+    enrollment_list = Enrollment.query.all()
+    return jsonify(
+        {
+            "data": [enrolllment.to_dict() for enrolllment in enrollment_list]
+        }
+    ), 200
+
 
 @app.route("/enrollment", methods=['POST'])
 def create_enrollment():
