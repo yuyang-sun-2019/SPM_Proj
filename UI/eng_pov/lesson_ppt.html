@@ -105,7 +105,7 @@
     var lesson_id = getParameterByName('id');
     var engineer_id = sessionStorage.getItem("user_id");
 
-    ppt_id = '../files/'+lesson_id
+    ppt_id = '../../files/'+lesson_id
     console.log(ppt_id)
     const pdf_embed = document.getElementById('ppt_material')
     pdf_embed.src = ppt_id
