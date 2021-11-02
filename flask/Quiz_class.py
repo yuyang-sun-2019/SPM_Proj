@@ -11,7 +11,7 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100,
 
 db = SQLAlchemy(app)
 
-# CORS(app)
+CORS(app)
 
 
 class Quiz(db.Model):
@@ -350,4 +350,4 @@ def take_ans_by_id(take_ans_id):
 "''''"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5004, debug=True)
