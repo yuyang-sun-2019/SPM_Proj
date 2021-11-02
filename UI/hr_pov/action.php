@@ -1,11 +1,5 @@
 <?php
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$dbname = "mydb";
-$tbname = "enrollment";
-
 $connect = new PDO("mysql:host=localhost;dbname=mydb","root", "");
 
 $recieved_data = json_decode(file_get_contents("php://input"));
@@ -54,6 +48,62 @@ if($recieved_data -> action == 'update_eng'){
     );
     echo json_encode($output);
 }
+
+// Update Progress
+if($recieved_data -> action == 'update_progress'){
+    $query ="
+    INSERT INTO progress (progress_id, engineer_id, course_id, lesson, pdf_material, ppt_material, video_material, doc_material, quiz_id) VALUES ('".$recieved_data->id."', '".$recieved_data->engineer_id."', '".$recieved_data->course_id."', '".$recieved_data->course_lesson_id."', NULL, NULL, NULL, NULL, NULL);
+    ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+
+    $output = array(
+        'message' => 'Engineer progress has been updated.'
+    );
+    echo json_encode($output);}
+
+
+// Update Progress Course Materials
+if($recieved_data -> action == 'update_progress_material'){
+    $query ="
+    UPDATE progress SET ".$recieved_data->course_material." = '".$recieved_data->id."' WHERE progress.progress_id = '".$recieved_data->progress_id."'
+    ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+
+    $output = array(
+        'message' => 'Engineer progress materials has been updated.'
+    );
+    echo json_encode($output);}
+
+
+
+// Update Progress Lesson
+if($recieved_data -> action == 'update_progress_lesson'){
+    $query ="
+    UPDATE progress SET lesson = '".$recieved_data->id."' WHERE progress.progress_id = '".$recieved_data->progress_id."';
+    UPDATE `progress` SET `pdf_material` = NULL, `ppt_material` = NULL, `video_material` = NULL, `doc_material` = NULL, `quiz_id` = NULL WHERE `progress`.`progress_id` = '".$recieved_data->progress_id."';
+    ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+
+    $output = array(
+        'message' => 'Engineer progress lesson has been updated.'
+    );
+    echo json_encode($output);}
+
+// Update Progress Lesson
+if($recieved_data -> action == 'reassign_course'){
+    $query ="
+    UPDATE progress SET lesson = '".$recieved_data->course_lesson."', `pdf_material` = NULL, `ppt_material` = NULL, `video_material` = NULL, `doc_material` = NULL, `quiz_id` = NULL WHERE progress.progress_id = '".$recieved_data->id."'
+    ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+
+    $output = array(
+        'message' => 'Engineer has been reassigned to the Course.'
+    );
+    echo json_encode($output);}
 
 
 
