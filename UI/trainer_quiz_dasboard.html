@@ -90,7 +90,7 @@
             <tr v-for="record in course_list">
                 <td><strong>{{ record.course_id }}</strong></td>
                 <td><a v-bind:href="'./course_content.html?id='+ record.course_id">{{ record.course_name }}</a></td>
-                <td><a v-bind:href="'./course_content.html?id='+ record.course_id">{{ record.course_name }}</a></td>
+                <td>{{ course_dict[record.course_id] }}</td>
                 <td><a href="./create_quiz.html"><button type="button" class="btn btn-primary" >Create Quiz</button></a></td>
             </tr>
         </tbody>
@@ -98,17 +98,38 @@
 
   </div>
   <script>
+    var trainer_id = sessionStorage.getItem("user_id");
       const vm = new Vue({
           el: '#main-container',
           data: {
-              course_list: []
+              course_list: [],
+              section_list: [],
+              course_dict: {}
           },
           mounted: function() {
+              axios.get('http://localhost:5002/trainer/'+ trainer_id)
+                  .then(response => {
+                    var ids = response.data.data["trainer_course_class_id"];
+                    this.section_list = ids.split(', ');
+                  }).catch(error => alert(error));
+
               axios.get('http://localhost:5001/course')
                   .then(response => {
-                      this.course_list = response.data.data;
-                  })
-                  .catch(error => alert(error));
+                    var cl = response.data.data;
+                    for(i = 0; i<cl.length;i++) {
+                      var sc = "";
+                      for(o = 0; o < this.section_list.length; o++) {
+                        if (this.section_list[o].includes(cl[i].course_id)) {
+                          sc += this.section_list[o] + " ";
+                        }
+                      }
+                        if (sc != "") {
+                          this.course_list.push(cl[i]);
+                          this.course_dict[cl[i].course_id] = sc;
+                        }
+                    }
+                  }).catch(error => alert(error));
+              
           }
       });
 
