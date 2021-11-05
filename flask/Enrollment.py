@@ -39,17 +39,7 @@ class Enrollment(db.Model):
             result[column] = getattr(self, column)
         return result
     
-    def get_enrollment_ID(self):
-        return self.enrollment_id
-    
-    def get_user_id(self):
-        return self.engineer_id
-    
-    def get_course_id(self):
-        return self.course_id
-    
-    def get_course_classid(self):
-        return self.course_class_id
+   
 
 db.create_all()
 

@@ -83,11 +83,7 @@ class Trainers(db.Model):
             result[column] = getattr(self, column)
         return result
     
-    def get_trainer_id(self):
-        return self.trainer_id
-    
-    def get_trainer_course_class_id(self):
-        return self.trainer_course_class_id
+ 
 
 
 
@@ -112,11 +108,7 @@ class HR(db.Model):
             result[column] = getattr(self, column)
         return result
     
-    def get_hr_id(self):
-        return self.trainer_id
-    
-    def get_courses_assigned(self):
-        return self.courses_assigned
+ 
 
 
 
