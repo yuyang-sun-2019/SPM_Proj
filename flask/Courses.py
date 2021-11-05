@@ -42,36 +42,6 @@ class Course(db.Model):
             result[column] = getattr(self, column)
         return result
     
-    def get_CourseID(self):
-        return self.course_id
-    
-    def get_CourseName(self):
-        return self.course_name
-    
-    def get_CourseType(self):
-        return self.course_type
-    
-    def get_CoursePrerequisite(self):
-        return self.course_prerequisite
-    
-    def get_CourseBrief(self):
-        return self.course_brief
-    
-    def get_CourseLesson(self):
-        return self.lessons
-    
-    def get_CourseClass(self):
-        return self.course_class
-    
-    def get_CoursePeriod(self):
-        return self.course_period
-    
-    def get_Course_StartDate(self):
-        return self.start_date
-    
-    def get_Course_EndDate(self):
-        return self.end_date
-
 
 
 
@@ -98,15 +68,7 @@ class Course_Class(db.Model):
             result[column] = getattr(self, column)
         return result
     
-    def get_Course_ClassID(self):
-        return self.course_class_id
-
-    def get_CourseID(self):
-        return self.course_id
-    
-    def get_SeatsAvailable(self):
-        return self.seats_available
-    
+ 
 
 
 
@@ -137,17 +99,8 @@ class Course_Lesson(db.Model):
             result[column] = getattr(self, column)
         return result
     
-    def get_Course_LessonID(self):
-        return self.course_lesson_id
+ 
 
-    def get_CourseID(self):
-        return self.course_id
-    
-    def get_PDFMaterial(self):
-        return self.pdf_material
-    
-    def get_PPTMaterial(self):
-        return self.ppt_material
 
 class Course_Progress(db.Model):
     __tablename__ = 'progress'
@@ -177,33 +130,6 @@ class Course_Progress(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
-    
-    def get_progress_id(self):
-        return self.progress_id
-
-    def get_engineer_id(self):
-        return self.engineer_id
-    
-    def get_course_id(self):
-        return self.course_id
-    
-    def get_lesson(self):
-        return self.lesson
-
-    def get_pdf_material(self):
-        return self.pdf_material
-
-    def get_ppt_material(self):
-        return self.ppt_material
-
-    def get_video_material(self):
-        return self.video_material
-    
-    def get_doc_material(self):
-        return self.doc_material
-
-    def get_quiz_id(self):
-        return self.quiz_id
     
 
     
