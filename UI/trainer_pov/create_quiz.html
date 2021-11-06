@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Quiz</title>
+
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+
+    <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/UI/css/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   
+    
+
+    <style>
+      table, th, td {
+        border: 1px solid black;
+        margin-left: 20px;
+      }
+      
+      th, td {
+        padding: 10px;
+      }
+      </style>
+
+</head>
+<body>
+    
+    <!-- Nav Bar -->
+<div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <h2 style="margin-left: 1em;">LMS</h2>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="./trainer_quiz_dashboard.html" style="font-size: medium; margin-left: 0.5em;">Trainer Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="./create_quiz.html" style="font-size: medium; margin-left: 0.5em">Create Quiz</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="./saved_quiz.html" style="font-size: medium; margin-left: 0.5em">Saved Quiz</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-log-out" style="color: grey; size: 3em;"></span> Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <h1 style= "margin-left: 20px">You have selected</h1>
+  <br>
+  <div class= "container">
+
+
+<div id= "main-container" class= "container">
+  <font size="3">
+
+    <div style="margin-left:18px">
+      <b>Lesson ID <input type="text" id="lesson"></b> </br></br>
+      <b>Quiz Duration</b> </br></br>
+      <form id='duration'>
+        <input id='h' name='h' type='number' min='0' max='24'>
+        <label for='h'>h</label>
+        <input id='m' name='m' type='number' min='0' max='59'>
+        <label for='m'>m</label>
+        <input id='s' name='s' type='number' min='0' max='59'>
+        <label for='s'>s</label>
+      </form>
+    </div>
+    <br><br>
+
+    <!-- MCQ QUESTION 1 -->
+    <div class="container" >
+      <div class="container">
+        <h3>Enter your question here : &nbsp&nbsp&nbsp&nbsp <input type="text" id="MCQ_qn1"></h3>
+      </div>
+      <div class="buttons" style="margin-left:20px">
+          <button class="btn" id="btn0" style="font-size: 10pt;">A.</button>
+          <input id="MCQ_qn1_A" style="width:200px;font-size:10pt;"></b>
+      </div>
+
+      <div class="buttons" style="margin-left:20px">
+        <button class="btn" id="btn0" style="font-size: 10pt;">B.</button>
+        <input  id="MCQ_qn1_B" style="width:200px;font-size:10pt;"></b>
+      </div>
+
+      <div class="buttons" style="margin-left:20px">
+        <button class="btn" id="btn0" style="font-size: 10pt;">C.</button>
+        <input  id="MCQ_qn1_C" style="width:200px;font-size:10pt;"></b>
+      </div>
+
+      <div class="buttons" style="margin-left:20px">
+        <button class="btn" id="btn0" style="font-size: 10pt;">D.</button>
+        <input  id="MCQ_qn1_D" style="width:200px;font-size:10pt;"></b>
+      </div>
+      <div class="container">
+        <h4>Enter your Answer here : &nbsp&nbsp&nbsp&nbsp <input type="text" id="MCQ_qn1_ans"></h4>
+        <h4>Enter the Score for the Question : &nbsp&nbsp&nbsp&nbsp <input type="number" id="MCQ_qn1_score"></h4>
+      </div>
+    </div>
+    <br><br>
+
+
+    <!-- MCQ QUESTION 2 -->
+    <div class="container" id="mcq_2" >
+      <div class="container">
+        <h3>Enter your question here : &nbsp&nbsp&nbsp&nbsp <input type="text" id="MCQ_qn2"></h3>
+      </div>
+      <div class="buttons" style="margin-left:20px">
+          <button class="btn" id="btn0" style="font-size: 10pt;">A.</button>
+          <input id="MCQ_qn2_A" style="width:200px;font-size:10pt;"></b>
+      </div>
+
+      <div class="buttons" style="margin-left:20px">
+        <button class="btn" id="btn0" style="font-size: 10pt;">B.</button>
+        <input  id="MCQ_qn2_B" style="width:200px;font-size:10pt;"></b>
+      </div>
+
+      <div class="buttons" style="margin-left:20px">
+        <button class="btn" id="btn0" style="font-size: 10pt;">C.</button>
+        <input  id="MCQ_qn2_C" style="width:200px;font-size:10pt;"></b>
+      </div>
+
+      <div class="buttons" style="margin-left:20px">
+        <button class="btn" id="btn0" style="font-size: 10pt;">D.</button>
+        <input  id="MCQ_qn2_D" style="width:200px;font-size:10pt;"></b>
+      </div>
+      <div class="container">
+        <h4>Enter your Answer here : &nbsp&nbsp&nbsp&nbsp <input type="text" id="MCQ_qn2_ans"></h4>
+        <h4>Enter the Score for the Question : &nbsp&nbsp&nbsp&nbsp <input type="number" id="MCQ_qn2_score"></h4>
+      </div>
+    </div>
+    <br><br>
+
+
+    <!-- True and False QUESTION 1 -->
+    <div class="container" id="t&f_1" >
+      <div class="container">
+        <h3>Enter your question here : &nbsp&nbsp&nbsp&nbsp <input type="text" id="t&f_qn1"></h3>
+      </div>
+ 
+      <div class="buttons" style="margin-left:20px">
+        <button class="btn" id="true1" style="font-size: 10pt; margin-left:4px"><h4>True</h4></button>
+      </div>
+
+      <div class="buttons" style="margin-left:20px">
+        <button class="btn" id="false1" style="font-size: 10pt;"><h4>False</h4></button>
+      </div>
+      <div class="container">
+        <h4>Enter your Answer here : &nbsp&nbsp&nbsp&nbsp <input type="text" id="t&f_qn1_ans"></h4>
+        <h4>Enter the Score for the Question : &nbsp&nbsp&nbsp&nbsp <input type="number" id="t&f_qn1_score"></h4>
+      </div>
+    </div>
+    <br><br>
+
+
+    <!-- True and False QUESTION 2 -->
+    <div class="container" id="t&f_2" >
+      <div class="container">
+        <h3>Enter your question here : &nbsp&nbsp&nbsp&nbsp <input type="text" id="t&f_qn2"></h3>
+      </div>
+      <div class="buttons" style="margin-left:20px">
+        <button class="btn" id="true1" style="font-size: 10pt; margin-left:4px"><h4>True</h4></button>
+      </div>
+
+      <div class="buttons" style="margin-left:20px">
+        <button class="btn" id="false1" style="font-size: 10pt;"><h4>False</h4></button>
+      </div>
+      <div class="container">
+        <h4>Enter your Answer here : &nbsp&nbsp&nbsp&nbsp <input type="text" id="t&f_qn2_ans"></h4>
+        <h4>Enter the Score for the Question : &nbsp&nbsp&nbsp&nbsp <input type="number" id="t&f_qn2_score"></h4>
+      </div>
+    </div>
+    <br><br>
+      
+    <input type="submit" value="Create Quiz" onclick="createQuiz()">
+  </font>
+</div>
+
+
+
+     
+
+<script>
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    var course_id = getParameterByName('id');
+    var trainer_id = sessionStorage.getItem("user_id");
+
+
+    function createQuiz(){
+      var lesson = document.getElementById('lesson').value
+
+      var hour = document.getElementById('h').value
+      var min = document.getElementById('m').value
+      var sec = document.getElementById('s').value
+
+      var MCQ_qn1 = document.getElementById('MCQ_qn1').value
+      var MCQ_qn1_A = document.getElementById('MCQ_qn1_A').value
+      var MCQ_qn1_B = document.getElementById('MCQ_qn1_B').value
+      var MCQ_qn1_C = document.getElementById('MCQ_qn1_C').value
+      var MCQ_qn1_D = document.getElementById('MCQ_qn1_D').value
+      var MCQ_qn1_ans = document.getElementById('MCQ_qn1_ans').value
+      var MCQ_qn1_score = document.getElementById('MCQ_qn1_score').value
+
+      var MCQ_qn2 = document.getElementById('MCQ_qn2').value
+      var MCQ_qn2_A = document.getElementById('MCQ_qn2_A').value
+      var MCQ_qn2_B = document.getElementById('MCQ_qn2_B').value
+      var MCQ_qn2_C = document.getElementById('MCQ_qn2_C').value
+      var MCQ_qn2_D = document.getElementById('MCQ_qn2_D').value
+      var MCQ_qn2_ans = document.getElementById('MCQ_qn2_ans').value
+      var MCQ_qn2_score = document.getElementById('MCQ_qn2_score').value
+
+      var tf_qn1 = document.getElementById('t&f_qn1').value
+      var tf_qn1_ans = document.getElementById('t&f_qn1_ans').value
+      var tf_qn1_score = document.getElementById('t&f_qn1_score').value
+
+      var tf_qn2 = document.getElementById('t&f_qn2').value
+      var tf_qn2_ans = document.getElementById('t&f_qn2_ans').value
+      var tf_qn2_score = document.getElementById('t&f_qn2_score').value
+
+      var quiz_id = course_id + '-' + lesson + '-Quiz'
+      var quiz_title = course_id + '-' + lesson
+      hour = format_time(hour)
+      min = format_time(min)
+      sec = format_time(sec)
+      var time = hour + ':' + min + ':' + sec
+     
+
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          quiz_id: quiz_id,
+          quiz_title: quiz_title,
+          quiz_duration: time,
+          FK_trainer_id: trainer_id
+        })
+      };
+      fetch('http://localhost:5004/quiz', requestOptions)
+          .then(response => {
+            alert('Quiz Description has successfully been added');
+            response.json()})
+          
+      
+
+      const requestOptions1 = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          quiz_qn_id: quiz_id,
+
+          MCQ_Qn1: MCQ_qn1,
+          MCQ_Qn1_A: MCQ_qn1_A,
+          MCQ_Qn1_B: MCQ_qn1_B,
+          MCQ_Qn1_C: MCQ_qn1_C,
+          MCQ_Qn1_D: MCQ_qn1_D,
+          MCQ_Qn1_Ans: MCQ_qn1_ans,
+          MCQ_Qn1_Score: MCQ_qn1_score,
+
+          MCQ_Qn2: MCQ_qn2,
+          MCQ_Qn2_A: MCQ_qn2_A,
+          MCQ_Qn2_B: MCQ_qn2_B,
+          MCQ_Qn2_C: MCQ_qn2_C,
+          MCQ_Qn2_D: MCQ_qn2_D,
+          MCQ_Qn2_Ans: MCQ_qn2_ans,
+          MCQ_Qn2_Score: MCQ_qn2_score,
+
+          TandF_Qn1: tf_qn1,
+          TandF_Qn1_Ans: tf_qn1_ans,
+          TandF_Qn1_Score: tf_qn1_score,
+
+          TandF_Qn2: tf_qn2,
+          TandF_Qn2_Ans: tf_qn2_ans,
+          TandF_Qn2_Score: tf_qn2_score,
+
+        })
+      };
+      fetch('http://localhost:5004/quiz_question_ans', requestOptions1)
+          .then(response => {
+            alert('Quiz has successfully been created');
+            response.json()})
+          
+      
+    }
+
+    function format_time(time){
+      if(time.length == 1){
+        time = '0' + time
+      }
+      return time
+    }
+
+
+
+
+    
+   
+</script>
+
+
+
+  
+
+  
+
+</body>
+</html>
