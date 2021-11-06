@@ -122,19 +122,51 @@ INSERT INTO `hr` (`hr_id`,`courses_assigned`) VALUES
 -- Table `quiz`
 -- -----------------------------------------------------
 CREATE TABLE `quiz` (
-  `quiz_id` varchar(75) NOT NULL ,
-  `FK_trainer_id` INT NOT NULL UNIQUE,
+  `quiz_id` varchar(75) NOT NULL UNIQUE,
+  `FK_trainer_id` INT NOT NULL,
   `quiz_title` VARCHAR(75) NOT NULL,
-  `quiz_score` INT(6) NOT NULL DEFAULT 0, 
-  `quiz_start_datetime` DATETIME NULL DEFAULT NULL,
-  `quiz_end_datetime` DATETIME NULL DEFAULT NULL,
-  `quiz_content` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`quiz_id`),
-  CONSTRAINT `FK_trainer_id`
-    FOREIGN KEY (`FK_trainer_id`)
-    REFERENCES `trainers` (`trainer_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  `quiz_duration` VARCHAR(75) NOT NULL,
+  PRIMARY KEY (`quiz_id`))
+
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8;
+
+
+-- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Table `quiz_qn_ans`
+-- -----------------------------------------------------
+CREATE TABLE `quiz_qn_ans` (
+  `quiz_qn_id` varchar(75) NOT NULL UNIQUE,
+
+  `MCQ_Qn1` varchar(75) NOT NULL,
+  `MCQ_Qn1_A` VARCHAR(75) NOT NULL,
+  `MCQ_Qn1_B` varchar(75) NOT NULL,
+  `MCQ_Qn1_C` VARCHAR(75) NOT NULL,
+  `MCQ_Qn1_D` VARCHAR(75) NOT NULL,
+  `MCQ_Qn1_Ans` varchar(75) NOT NULL,
+  `MCQ_Qn1_Score` INT NOT NULL,
+
+  `MCQ_Qn2` varchar(75) NOT NULL,
+  `MCQ_Qn2_A` VARCHAR(75) NOT NULL,
+  `MCQ_Qn2_B` varchar(75) NOT NULL,
+  `MCQ_Qn2_C` VARCHAR(75) NOT NULL,
+  `MCQ_Qn2_D` VARCHAR(75) NOT NULL,
+  `MCQ_Qn2_Ans` varchar(75) NOT NULL,
+  `MCQ_Qn2_Score` INT NOT NULL,
+
+  `TandF_Qn1` varchar(75) NOT NULL,
+  `TandF_Qn1_Ans` VARCHAR(75) NOT NULL,
+  `TandF_Qn1_Score` INT NOT NULL,
+
+  `TandF_Qn2` varchar(75) NOT NULL,
+  `TandF_Qn2_Ans` VARCHAR(75) NOT NULL,
+  `TandF_Qn2_Score` INT NOT NULL,
+  
+  PRIMARY KEY (`quiz_qn_id`))
+
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
 
 
 
@@ -356,123 +388,6 @@ CREATE TABLE IF NOT EXISTS `enrollment` (
 
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
-
-
--- --------------------------------------------------------
--- -----------------------------------------------------
--- Table `quiz_qn`
--- -----------------------------------------------------
-CREATE TABLE `quiz_qn` (
-  `qn_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `quiz_id` varchar(75) NOT NULL,
-  `qn_score` SMALLINT(6) NOT NULL DEFAULT 0,
-  `qn_content` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`qn_id`),
-  CONSTRAINT `fk_qn_quiz`
-    FOREIGN KEY (`quiz_id`)
-    REFERENCES `quiz` (`quiz_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
-
--- --------------------------------------------------------
--- -----------------------------------------------------
--- Table `ans_key`
--- -----------------------------------------------------
-CREATE TABLE `ans_key` (
-  `ans_id` VARCHAR(75) NOT NULL,
-  `quiz_id` VARCHAR(75) NOT NULL,
-  `qn_id` VARCHAR(75) NOT NULL,
-  `correct` TINYINT(1) NOT NULL DEFAULT 0,
-  `ans_key` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`ans_id`),
-  INDEX `idx_answer_quiz` (`quiz_id` ASC),
-  CONSTRAINT `fk_answer_quiz`
-    FOREIGN KEY (`quiz_id`)
-    REFERENCES `quiz` (`quiz_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
-
-ALTER TABLE `ans_key` 
-ADD INDEX `idx_ans_qn` (`qn_id` ASC);
-ALTER TABLE `ans_key` 
-ADD CONSTRAINT `fk_ans_qn`
-  FOREIGN KEY (`qn_id`)
-  REFERENCES `quiz_qn` (`quiz_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION;
-
-
--- --------------------------------------------------------
--- -----------------------------------------------------
--- Table `take_table`
--- -----------------------------------------------------
-CREATE TABLE `take_table` (
-  `take_id` VARCHAR(75) NOT NULL,
-  `engineer_id` INT NOT NULL,
-  `quiz_id` VARCHAR(75) NOT NULL,
-  `engineer_score` SMALLINT(6) NOT NULL DEFAULT 0,
-  `startedAt` DATETIME NULL DEFAULT NULL,
-  `finishedAt` DATETIME NULL DEFAULT NULL,
-  PRIMARY KEY (`take_id`),
-  INDEX `idx_take_engineer` (`engineer_id` ASC),
-  CONSTRAINT `fk_take_engineer`
-    FOREIGN KEY (`engineer_id`)
-    REFERENCES `engineers` (`engineer_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
-
-ALTER TABLE `take_table` 
-ADD INDEX `idx_take_quiz` (`quiz_id` ASC);
-ALTER TABLE `take_table` 
-ADD CONSTRAINT `fk_take_quiz`
-  FOREIGN KEY (`quiz_id`)
-  REFERENCES `quiz` (`quiz_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION;
-
-
--- --------------------------------------------------------
--- -----------------------------------------------------
--- Table `take_ans`
--- -----------------------------------------------------
-CREATE TABLE `take_ans` (
-  `take_ans_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `take_id` VARCHAR(75) NOT NULL,
-  `qn_id` BIGINT NOT NULL,
-  `ans_id` BIGINT NOT NULL,
-  PRIMARY KEY (`take_ans_id`),
-  INDEX `idx_answer_take` (`take_id` ASC),
-  CONSTRAINT `fk_answer_take`
-    FOREIGN KEY (`take_id`)
-    REFERENCES `take_table` (`take_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-ALTER TABLE `take_ans` 
-ADD INDEX `idx_tanswer_qn` (`qn_id` ASC);
-ALTER TABLE `take_ans` 
-ADD CONSTRAINT `fk_tanswer_qn`
-  FOREIGN KEY (`qn_id`)
-  REFERENCES `quiz_qn` (`qn_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION;
-
-ALTER TABLE `take_ans` 
-ADD INDEX `idx_tanswer_answer` (`ans_id` ASC);
-ALTER TABLE `take_ans` 
-ADD CONSTRAINT `fk_tanswer_answer`
-  FOREIGN KEY (`ans_id`)
-  REFERENCES `quiz_ans` (`ans_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION;
-
 
 
 -- --------------------------------------------------------
