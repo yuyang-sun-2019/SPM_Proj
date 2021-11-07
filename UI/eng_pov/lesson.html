@@ -109,6 +109,14 @@
       <br>
     </div>
 
+    <br>
+    <h3><strong>Attempt quizzes here {{lesson_id}}</strong></h3>
+    <br>
+    <div v-for="record in quiz_id">
+      <a v-bind:href="'./lesson_quiz.html?id='+ record" @click="append(record)"><h6 style="font-size:2em; margin-left: 1em;">Click here to attempt the quiz</h6></a>
+      <br>
+      </div>
+
   </div>
 
   <br>
@@ -142,7 +150,8 @@
               pdf_materials: [],
               ppt_materials: [],
               video_materials: [],
-              doc_materials: []
+              doc_materials: [],
+              quiz_id=[]
           },
           mounted: function() {
               axios.get('http://localhost:5001/course_lesson/'+lesson_id)
@@ -153,6 +162,7 @@
                       this.ppt_material = response.data.data['ppt_material'].split(', ')
                       this.video_material = response.data.data['video_material'].split(', ')
                       this.doc_material = response.data.data['doc_material'].split(', ')
+                      this.quiz_id = [response.data.data['quiz_id']]
                   })
                   .catch(error => alert(error));
           },
