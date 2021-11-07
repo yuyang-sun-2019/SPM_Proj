@@ -64,10 +64,7 @@ def create_enrollment():
         }), 500
     enrollment = Enrollment(
       engineer_id=data['engineer_id'], course_id=data['course_id'], course_class_id=data['course_class_id'])
-    print(enrollment.get_course_id())
-    print(enrollment.get_user_id())
-    print(enrollment.get_enrollment_ID())
-    print(enrollment.get_course_classid())
+
     
 
     try:

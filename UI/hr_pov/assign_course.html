@@ -93,9 +93,6 @@
     </table>
 
     <br>
-    <input type="button" style= "margin:0 auto;
-      display:block; padding: 10px 20px;" class="btn btn-dark" value="Accept" id="submit1" @click="eligibility()"/>
-
 
     
   </div>
@@ -157,53 +154,7 @@
                   })
                   .catch(error => alert(error));
           },
-          method: {
-            eligibility: function(){
-              alert("Hey")
-            }
-          }
       });
-
-
-
-  var enroll = new Vue({
-    el: '#enroll',
-    data: {
-        course_class: [],
-        course: ''
-
-    },
-    methods:{
-      reject: function() {
-        const values = Array
-            .from(document.querySelectorAll('input[type="checkbox"]'))
-            .filter((checkbox) => checkbox.checked)
-            .map((checkbox) => checkbox.value);
-            console.log(values)
-          if(confirm("Are you sure you want to delete this record?")){
-            for(var i =0; i<values.length; i++){
-              axios.post('action.php',{
-                action: 'delete',
-                id: values[i]
-              }).then(function(response){
-                console.log(response.data)
-                  alert(response.data.message)
-              })
-            }
-            location.reload()
-          }
-      },
-      accept: function(){
-        const values = Array
-            .from(document.querySelectorAll('input[type="checkbox"]'))
-            .filter((checkbox) => checkbox.checked)
-            .map((checkbox) => checkbox.value);
-            console.log(values)
-      }
-    
-    }
- 
-  });
 
   
   </script>

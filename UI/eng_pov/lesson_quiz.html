@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(NEW) Quiz in HTML</title>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+
+</head>
+</head>
+
+<!-- Nav Bar -->
+<div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <h2 style="margin-left: 1em;">NavBar</h2>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="./engineer_homepage.html" style="font-size: medium; margin-left: 0.5em;">HomePage</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="./engineer_past.html" style="font-size: medium; margin-left: 0.5em">Past Courses</a>
+                </li>
+            
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="./engineer_current.html" style="font-size: medium; margin-left: 0.5em">Current Courses</a>
+                </li>
+            
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="./engineer_course.html" style="font-size: medium; margin-left: 0.5em">List of Courses</a>
+                </li>
+            
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="./engineer_profile.html" style="font-size: medium; margin-left: 0.5em">Profile Page</a>
+                </li>
+            </ul>
+          
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-bell" style="color: grey; size: 3em;"></span> Notification</a>
+                </li>
+            
+                <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-earphone" style="color: grey; size: 3em;"></span> Chat/Email</a>
+                </li>
+            
+                <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-log-out" style="color: grey; size: 3em;"></span> Logout</a>
+                </li>
+            </ul>
+
+        </div>
+        </div>
+    </nav>
+</div>
+
+
+
+<body>
+    <div id="main-container" class="container">
+
+        <h2 class="display-4">You are attempting</h2>
+    </div>
+    <br>
+    <br>
+
+    <p id="count-down"></p>
+    
+    
+        
+        <div id="quiz_class" class="container" style="font-size: 1em">
+
+          <div v-for="record in quiz_list">
+
+            <h3>
+                 MCQ Question 1  - {{ record.MCQ_Qn1}}
+            </h3>
+        
+                <br>
+                <form>
+                <input class="form-check-input" type="radio" name="flexRadioDefault1" :value="record.MCQ_Qn1_A">
+                <label class="form-check-label" for="flexRadioDefault1" >A.{{ record.MCQ_Qn1_A}}</label>
+                <br>
+                <input class="form-check-input" type="radio" name="flexRadioDefault1" :value="record.MCQ_Qn1_B">
+                <label class="form-check-label" for="flexRadioDefault1" >B.{{ record.MCQ_Qn1_B}}</label>
+                <br>
+                <input class="form-check-input" type="radio" name="flexRadioDefault1" :value="record.MCQ_Qn1_C">
+                <label class="form-check-label" for="flexRadioDefault1" >C.{{ record.MCQ_Qn1_C}}</label>
+                <br>
+                <input class="form-check-input" type="radio" name="flexRadioDefault1" :value="record.MCQ_Qn1_D">
+                <label class="form-check-label" for="flexRadioDefault1" >D.{{ record.MCQ_Qn1_D}}</label>
+
+                <br>
+                </form>
+
+<br>
+<br>
+
+            <h3>
+                MCQ Question 2  - {{ record.MCQ_Qn2}}
+           </h3>
+
+                <br>
+                <form>
+                <input class="form-check-input" type="radio" name="flexRadioDefault2" :value="record.MCQ_Qn2_A">
+                <label class="form-check-label" for="flexRadioDefault2" >A.{{ record.MCQ_Qn2_A}}</label>
+                <br>
+                <input class="form-check-input" type="radio" name="flexRadioDefault2" :value="record.MCQ_Qn2_B">
+                <label class="form-check-label" for="flexRadioDefault2" >B.{{ record.MCQ_Qn2_B}}</label>
+                <br>
+                <input class="form-check-input" type="radio" name="flexRadioDefault2" :value="record.MCQ_Qn2_C">
+                <label class="form-check-label" for="flexRadioDefault2" >C.{{ record.MCQ_Qn2_C}}</label>
+                <br>
+                <input class="form-check-input" type="radio" name="flexRadioDefault2" :value="record.MCQ_Qn2_D">
+                <label class="form-check-label" for="flexRadioDefault2" >D.{{ record.MCQ_Qn2_D}}</label>
+                </form>
+
+
+<br>
+<br>
+
+            <h3>
+                True and False Question 1  - {{ record.TandF_Qn1}}
+           </h3>
+
+                <br>
+                <form>
+                <input class="form-check-input" type="radio" name="flexRadioDefault3" :value="'True'">
+                <label class="form-check-label" for="flexRadioDefault3" >True</label>
+                <br>
+                <input class="form-check-input" type="radio" name="flexRadioDefault3" :value="'False'">
+                <label class="form-check-label" for="flexRadioDefault3" >False</label>
+                </form>
+
+<br>
+<br>
+
+
+
+            <h3>
+                True and False Question 2  - {{ record.TandF_Qn2}}
+           </h3>
+
+                <br>
+                <form>
+                <input class="form-check-input" type="radio" name="flexRadioDefault4" :value="'True'">
+                <label class="form-check-label" for="flexRadioDefault3" >True</label>
+                <br>
+                <input class="form-check-input" type="radio" name="flexRadioDefault4" :value="'False'">
+                <label class="form-check-label" for="flexRadioDefault3" >False</label>
+                </form>
+
+<br>
+<br>
+
+                <div>
+                    <input type="button" style= "margin:0 auto;
+                     display:block; padding: 10px 20px;" class="btn btn-dark" value="submit" id="submit1" @click="getScore()"/>
+                  </div>
+                
+
+                </form>
+
+                   <br>
+
+                   
+               
+            
+        </div>
+    </div>
+    
+    <script>
+
+        var engineer_id = sessionStorage.getItem("user_id")
+        
+
+        function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        var quiz_id = getParameterByName('id');
+    
+
+        var qn1_ans = '';
+        var qn2_ans = '';
+        var qn3_ans = '';
+        var qn4_ans = '';
+        var total_score ='';
+     
+
+
+      const vm = new Vue({
+        el: '#quiz_class',
+        data: {
+            quiz_list: [],
+            quiz_list1: [],
+            qn1_ans: '',
+            qn_take_id:'',
+        },
+        mounted: function() {
+            
+            axios.get('http://localhost:5004/quiz_qn_ans/'+quiz_id)
+                .then(response => {
+                    this.quiz_list = response.data;
+                    this.qn1_ans = response.data.data;
+                    qn1_ans = this.qn1_ans['MCQ_Qn1_Ans']
+                    qn2_ans = this.qn1_ans['MCQ_Qn2_Ans']
+                    qn3_ans = this.qn1_ans['TandF_Qn1_Ans']
+                    qn4_ans = this.qn1_ans['TandF_Qn2_Ans']
+                })
+                .catch(error => alert(error))
+
+               
+        },
+
+        methods:{
+       
+        
+        getScore: function() {
+
+        this.MCQ_Qn1_checked = document.querySelector('input[name="flexRadioDefault1"]:checked').value;
+        this.MCQ_Qn2_checked = document.querySelector('input[name="flexRadioDefault2"]:checked').value;
+        this.TandF_Qn1_checked = document.querySelector('input[name="flexRadioDefault3"]:checked').value;
+        this.TandF_Qn2_checked = document.querySelector('input[name="flexRadioDefault4"]:checked').value;
+
+        MCQ_Qn1_Ans = qn1_ans
+        MCQ_Qn2_Ans = qn2_ans
+        TandF_Qn1_Ans = qn3_ans
+        TandF_Qn2_Ans = qn4_ans
+        
+        var MCQ_Qn1_Score = 0
+        var MCQ_Qn2_Score = 0
+        var TandF_Qn1_Score = 0
+        var TandF_Qn2_Score = 0
+        var total_score = 0
+
+
+        if (MCQ_Qn1_Ans==this.MCQ_Qn1_checked){MCQ_Qn1_Score=1} else {MCQ_Qn1_Score=0}
+        if (MCQ_Qn2_Ans==this.MCQ_Qn2_checked){MCQ_Qn2_Score=1} else {MCQ_Qn2_Score=0}
+        if (TandF_Qn1_Ans==this.TandF_Qn1_checked){TandF_Qn1_Score=1} else {TandF_Qn1_Score=0}
+        if (TandF_Qn2_Ans==this.TandF_Qn2_checked){TandF_Qn2_Score=1} else {TandF_Qn2_Score=0}
+
+
+        total_score = MCQ_Qn1_Score + MCQ_Qn2_Score + TandF_Qn1_Score + TandF_Qn2_Score
+
+       
+       var quiz_take_id = engineer_id +'-'+ quiz_id
+    
+        alert("You have scored " + total_score +"/4")
+        
+
+          
+            axios.post('http://localhost:5004/quiz_take',{
+                quiz_take_id: quiz_take_id,
+                quiz_score: total_score,
+              })
+              .then(response => {
+                alert('Sucess')
+                return false;
+            })
+    
+
+    }}
+
+
+
+});
+
+
+     // Add A CountDown for the Quiz
+    // console.log(vm.quiz_list1);
+     let time = 15;
+        let quizTimeInMinutes = time * 60 * 60;
+        let quizTime = quizTimeInMinutes / 60;
+
+        let counting = document.getElementById("count-down");
+
+        function startCountdown(){
+            let quizTimer = setInterval(function(){
+            if(quizTime <= 0) {
+                clearInterval(quizTimer);
+                showScores();
+            } else {
+                quizTime--;
+                let sec = Math.floor(quizTime % 60);
+                let min = Math.floor(quizTime / 60) % 60;
+                counting.innerHTML = `TIME: ${min} : ${sec}`;   
+            }
+        },1000);
+        }
+
+        startCountdown();
+
+
+    </script>
+        
+</body>
+</html>

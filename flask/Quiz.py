@@ -238,9 +238,83 @@ def create_quiz_qn():
 
 
 
+class quiz_take(db.Model):
+    __tablename__ = 'quiz_take'
+
+    quiz_take_id = db.Column(db.String(75), primary_key=True)
+    quiz_score = db.Column(db.Integer)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'quiz'
+    }
+
+    def to_dict(self):
+        """
+        'to_dict' converts the object into a dictionary,
+        in which the keys correspond to database columns
+        """
+        columns = self.__mapper__.column_attrs.keys()
+        result = {}
+        for column in columns:
+            result[column] = getattr(self, column)
+        return result
+
+    def get_quiz_take_id(self):
+        return self.quiz_take_id
+    
+    def get_quiz_score(self):
+        return self.quiz_score
 
 
 
+db.create_all()
+
+
+@app.route("/quiz_take")
+def quiz_taken():
+    quiz_take_list = quiz_take.query.all()
+    return jsonify(
+        {
+            "data": [quiz.to_dict() for quiz in quiz_take_list]
+        }
+    ), 200
+
+@app.route("/quiz_take/<quiz_take_id>")
+def quiz_take_by_id(quiz_take_id):
+    quiz_taken = quiz_take.query.filter_by(quiz_take_id=quiz_take_id).first()
+    if quiz:
+        return jsonify({
+            "data": quiz_taken.to_dict()
+        }), 200
+    else:
+        return jsonify({
+            "message": "Quiz not found."
+        }), 404
+"''''"
+
+
+
+@app.route("/quiz_take", methods=['POST'])
+def create_quiz_take():
+    data = request.get_json()
+    print(data)
+    if not all(key in data.keys() for
+               key in ('quiz_take_id', 'quiz_score')):
+        return jsonify({
+            "message": "Incorrect JSON object provided."
+        }), 500
+    quizzes_taken = quiz_take(
+      quiz_take_id=data['quiz_take_id'], quiz_score=data['quiz_score'] )
+    
+
+    try:
+        db.session.add(quizzes_taken)
+        db.session.commit()
+        return jsonify(quizzes_taken.to_dict()), 201
+    except Exception:
+        return jsonify({
+            "message": "Unable to commit to database."
+        }), 500
 
 
 if __name__ == '__main__':

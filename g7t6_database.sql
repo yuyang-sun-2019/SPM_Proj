@@ -40,8 +40,6 @@ INSERT INTO `person` (`id`, `name`, `email`, `pwd`) VALUES
 (761, 'Fred', 'fred@trainer.com', 'trainer761'),
 (762, 'Grace', 'grace@trainer.com', 'trainer762'),
 (763, 'Helen', 'helen@trainer.com', 'trainer763'),
-(764, 'Isabel', 'isabel@trainer.com', 'trainer764'),
-(765, 'John', 'john@trainer.com', 'trainer765'),
 (366, 'Kevin', 'kevin@hr.com', 'hr366'),
 (367, 'Leo', 'leo@hr.com' , 'hr367'),
 (368, 'Matt', 'matt@hr.com', 'hr368'),
@@ -90,8 +88,8 @@ INSERT INTO `trainers` (`trainer_id`, `trainer_course_class_id`) VALUES
 (761, 'C101-C1, C101-C2, C101-C3, C102-C1, C102-C2, C102-C3, C201-C1, C201-C2, C202-C1, C202-C2, C301-C1, C301-C2, C301-C3, C302-C1, C302-C2, C302-C3'),
 (762,'C103-C1, C103-C2, C103-C3, C203-C1, C203-C2, C303-C1, C303-C2, C303-C3, C304-C1, C304-C2, C304-C3'),
 (763, 'C104-C1, C104-C2, C104-C3, C105-C1, C105-C2, C105-C3, C204-C1, C204-C2, C205-C1, C205-C2, C305-C1, C305-C2, C305-C3'),
-(764, 'C206-C1, C206-C2, C206-C3, C207-C1, C207-C2, C207-C3, C208-C1, C208-C2, C208-C3'),
-(765, 'C209-C1, C209-C2, C209-C3, C210-C1, C210-C2, C210-C3');
+
+
 
 
 
@@ -168,6 +166,35 @@ CREATE TABLE `quiz_qn_ans` (
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8;
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz_take`
+--
+
+CREATE TABLE `quiz_take` (
+  `quiz_take_id` varchar(75) NOT NULL,
+  `quiz_score` varchar(75) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `quiz_take`
+--
+
+INSERT INTO `quiz_take` (`quiz_take_id`, `quiz_score`) VALUES
+('001-C201-L1-Quiz', '2'),
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `quiz_take`
+--
+ALTER TABLE `quiz_take`
+  ADD PRIMARY KEY (`quiz_take_id`),
+  ADD UNIQUE KEY `quiz_take_id` (`quiz_take_id`);
 
 
 -- --------------------------------------------------------
@@ -388,6 +415,13 @@ CREATE TABLE IF NOT EXISTS `enrollment` (
 
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+
+
+
+
+
 
 
 -- --------------------------------------------------------
