@@ -20,6 +20,27 @@ if($recieved_data -> action == 'delete'){
     echo json_encode($output);
 }
 
+
+
+// Update Data
+if($recieved_data -> action == 'update'){
+    $query = "
+    SET @course = (SELECT course_class_id FROM enrollment WHERE `enrollment_id` = '".$recieved_data->id."' );
+    UPDATE engineers SET engineer_inprogress_courses = (CONCAT(engineer_inprogress_courses, ', ', @course)) WHERE `engineer_id` = '".$recieved_data->e_id."';
+    UPDATE course_class SET seats_available = seats_available - 1 WHERE course_class.course_class_id = @course;
+    DELETE FROM enrollment WHERE `enrollment_id` = '".$recieved_data->id."';
+    ";
+    // echo "<script type='text/javascript'>alert('$received_data');</script>";
+    
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    // var_dump($recieved_data);
+    $output = array(
+        'message' => 'Engineer has been enrolled'
+    );
+    echo json_encode($output);
+}
+
 // Update Seats
 if($recieved_data -> action == 'update_seat'){
     $query = "

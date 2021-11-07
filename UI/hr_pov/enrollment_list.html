@@ -51,9 +51,6 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="./enrollment_list.html" style="font-size: medium; margin-left: 0.5em">Course Enrollment Applications</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./reassign_eng.html" style="font-size: medium; margin-left: 0.5em">Reassign Engineers</a>
-          </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#" style="color: black; font-size: small;"><span class="glyphicon glyphicon-log-out" style="color: grey; size: 3em;"></span> Logout</a></li>
@@ -102,31 +99,16 @@
   </div>
 
   <script>
-    
-    var hr_id = sessionStorage.getItem("user_id");
-
       const vm = new Vue({
           el: '#main-container',
           data: {
-              data_list: [],
               enrollment_list: [],
-              hr_courses: []
           },
           mounted: function() {
-            axios.get('http://localhost:5002/hr/'+hr_id)
-                  .then(response => {
-                      this.hr_courses = response.data.data['courses_assigned'].split(', '); 
-                      console.log(this.hr_courses)
-                  })
-                  .catch(error => alert(error));
+              let vm = this;
               axios.get('http://localhost:5003/enrollment')
                   .then(response => {
-                      this.data_list = response.data.data;
-                      for(var i =0; i<this.data_list.length; i++){
-                        if(this.hr_courses.includes(this.data_list[i]['course_id'])){
-                          this.enrollment_list.push(this.data_list[i])
-                        }
-                      }
+                      this.enrollment_list = response.data.data; 
                   })
                   .catch(error => alert(error));
           },
@@ -135,10 +117,18 @@
 
   var enroll = new Vue({
     el: '#enroll',
+    mounted: function() {
+              let enroll = this;
+              axios.get('http://localhost:5003/enrollment')
+                  .then(response => {
+                      this.enrollment_list = response.data.data; 
+                  })
+                  .catch(error => alert(error));
+          },
     data: {
         course_class: [],
-        course: ''
-
+        course: '',
+        enrollment_list: this.enrollment_list,
     },
     methods:{
       reject: function() {
@@ -146,12 +136,12 @@
             .from(document.querySelectorAll('input[type="checkbox"]'))
             .filter((checkbox) => checkbox.checked)
             .map((checkbox) => checkbox.value);
-            console.log(values)
+             //console.log(values)
           if(confirm("Are you sure you want to delete this record?")){
             for(var i =0; i<values.length; i++){
               axios.post('action.php',{
                 action: 'delete',
-                id: values[i]
+                id: values[i],
               }).then(function(response){
                 console.log(response.data)
                   alert(response.data.message)
@@ -160,7 +150,6 @@
             location.reload()
           }
       },
-      
       accept: function(){
         
         const values = Array
@@ -174,23 +163,16 @@
             
             var engineer_id = enroll.enrollment_list[i].engineer_id;
             var course = enroll.enrollment_list[i].course_id;
-            // console.log(enroll.enrollment_list[i])
             var course_class = enroll.enrollment_list[i].course_class_id;
             var lesson = course + "-L1";
             var progress = engineer_id + ' ' + course_class ;
 
-            alert(progress)
-            
-            
             axios.post('action.php',{
                 action: 'update',
                 id: values[i],
                 e_id: engineer_id,
               }).then(function(response){
                 console.log(response)
-                // console.log(enroll.enrollment_list[0].engineer_id);
-                
-                // console.log(response.data)
                   alert(response.data.message)
               })
               axios.post('action.php',{
@@ -204,15 +186,11 @@
                 console.log(response.data)
                   alert(response.data.message)
               })
-
-
         }
         location.reload()
       }
     }
       
-      
-        
     }
  
   });
