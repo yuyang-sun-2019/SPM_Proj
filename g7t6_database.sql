@@ -86,8 +86,8 @@ DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `trainers` (`trainer_id`, `trainer_course_class_id`) VALUES
 (761, 'C101-C1, C101-C2, C101-C3, C102-C1, C102-C2, C102-C3, C201-C1, C201-C2, C202-C1, C202-C2, C301-C1, C301-C2, C301-C3, C302-C1, C302-C2, C302-C3'),
-(762,'C103-C1, C103-C2, C103-C3, C203-C1, C203-C2, C303-C1, C303-C2, C303-C3, C304-C1, C304-C2, C304-C3'),
-(763, 'C104-C1, C104-C2, C104-C3, C105-C1, C105-C2, C105-C3, C204-C1, C204-C2, C205-C1, C205-C2, C305-C1, C305-C2, C305-C3'),
+(762,'C103-C1, C103-C2, C203-C1, C203-C2, C303-C1, C303-C2, C304-C1, C304-C2, C304-C3'),
+(763, 'C104-C1, C104-C2, C104-C3, C104-C4, C105-C1, C105-C2, C105-C3, C204-C1, C204-C2, C205-C1, C205-C2, C305-C1');
 
 
 
@@ -107,9 +107,9 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `hr` (`hr_id`,`courses_assigned`) VALUES
-(366, 'C101, C102, C103, C104, C105, C305'),
+(366, 'C101, C102, C103, C104, C205, C305'),
 (367, 'C201, C202, C203'),
-(368, 'C204, C205'),
+(368, 'C204, C105'),
 (369, 'C301, C302, C303, C304');
 
 
@@ -128,6 +128,24 @@ CREATE TABLE `quiz` (
 
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO `quiz` (`quiz_id`, `FK_trainer_id`, `quiz_title`, `quiz_duration`) VALUES 
+('C101-L1-Quiz', '761', 'C101-L1', '00:15:00'), 
+('C102-L2-Quiz', '761', 'C102-L1', '00:15:00'),
+('C103-L1-Quiz', '762', 'C103-L1', '00:15:00'), 
+('C104-L2-Quiz', '763', 'C104-L1', '00:15:00'),
+('C105-L1-Quiz', '763', 'C105-L1', '00:15:00'), 
+('C201-L2-Quiz', '761', 'C201-L1', '00:15:00'),
+('C202-L1-Quiz', '761', 'C202-L1', '00:15:00'), 
+('C203-L2-Quiz', '762', 'C203-L1', '00:15:00'),
+('C204-L1-Quiz', '763', 'C204-L1', '00:15:00'), 
+('C205-L2-Quiz', '763', 'C205-L1', '00:15:00'),
+('C301-L1-Quiz', '761', 'C301-L1', '00:15:00'), 
+('C302-L2-Quiz', '761', 'C302-L1', '00:15:00'),
+('C303-L1-Quiz', '762', 'C303-L1', '00:15:00'), 
+('C304-L2-Quiz', '762', 'C304-L1', '00:15:00'),
+('C305-L1-Quiz', '763', 'C305-L1', '00:15:00');
+
 
 
 -- --------------------------------------------------------
@@ -167,34 +185,26 @@ CREATE TABLE `quiz_qn_ans` (
   DEFAULT CHARACTER SET = utf8;
 
 
--- --------------------------------------------------------
+  INSERT INTO `quiz_qn_ans` (`quiz_qn_id`, `MCQ_Qn1`, `MCQ_Qn1_A`, `MCQ_Qn1_B`, `MCQ_Qn1_C`, `MCQ_Qn1_D`, `MCQ_Qn1_Ans`, `MCQ_Qn1_Score`, `MCQ_Qn2`, `MCQ_Qn2_A`, `MCQ_Qn2_B`, `MCQ_Qn2_C`, `MCQ_Qn2_D`, `MCQ_Qn2_Ans`, `MCQ_Qn2_Score`, `TandF_Qn1`, `TandF_Qn1_Ans`, `TandF_Qn1_Score`, `TandF_Qn2`, `TandF_Qn2_Ans`, `TandF_Qn2_Score`) VALUES
+  ('C101-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C102-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C103-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C104-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C105-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C201-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C202-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C203-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C204-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C205-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C301-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C302-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C303-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C304-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1),
+  ('C305-L1-Quiz', 'What is the  lesson?', 'SPM', 'ESM', 'ESD', 'WAD2', 'SPM', 1, 'What is the most favourite color?', 'red', 'pink', 'yellow', 'blue', 'blue', 1, 'I like starbucks?', 'True', 1, 'I do not like strabucks?', 'False', 1);
 
---
--- Table structure for table `quiz_take`
---
 
-CREATE TABLE `quiz_take` (
-  `quiz_take_id` varchar(75) NOT NULL,
-  `quiz_score` varchar(75) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `quiz_take`
---
 
-INSERT INTO `quiz_take` (`quiz_take_id`, `quiz_score`) VALUES
-('001-C201-L1-Quiz', '2'),
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `quiz_take`
---
-ALTER TABLE `quiz_take`
-  ADD PRIMARY KEY (`quiz_take_id`),
-  ADD UNIQUE KEY `quiz_take_id` (`quiz_take_id`);
 
 
 -- --------------------------------------------------------
@@ -229,7 +239,7 @@ INSERT INTO `course_details` (`course_id`,`course_name`,`course_type`, `course_p
 ('C204', 'Applications of Electrical Engineering', 'Biddable', 'C104', 'This is a Year1 course which requires the completion of C104 Principles of Electrical Engineering', 'C204-C1, C204-C2', 'C204-L1, C204-L2', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 ('C205', 'Consumer Psychology', 'Biddable', 'C102','This is a Year1 course which requires the completion of C105 Engineering Design and Solutions', 'C205-C1, C205-C2', 'C205-L1, C205-L2, C205-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 
-('C301', 'Advanced Mathematics', 'Biddable', 'C101, C201', 'This is a biddable course, please refer to OASIS for more information', 'C301-C1, C301-C2, C301-C2', 'C301-L1, C301-L2, C301-L3, C301-L4', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
+('C301', 'Advanced Mathematics', 'Biddable', 'C101, C201', 'This is a biddable course, please refer to OASIS for more information', 'C301-C1, C301-C2, C301-C3', 'C301-L1, C301-L2, C301-L3, C301-L4', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 ('C302', 'Advanced Engineering Mathematics', 'Biddable', 'C102, C202', 'This is a biddable course, please refer to OASIS for more information', 'C302-C1, C302-C2, C302-C3', 'C302-L1, C302-L2', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 ('C303', 'Emerging Technologies', 'Biddable', 'C203', 'This is a biddable course, please refer to OASIS for more information', 'C303-C1, C303-C2, C303-C3', 'C303-L1, C303-L2, C303-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month),
 ('C304', 'Financial Technology', 'Biddable', 'C203', 'This is a biddable course, please refer to OASIS for more information','C304-C1, C304-C2, C304-C3', 'C304-L1, C304-L2', '2021-11-25 09:00:00', `start_date` + INTERVAL 4 month),
@@ -366,7 +376,6 @@ INSERT INTO `course_lesson` (`course_lesson_id`,`course_id`, `pdf_material`,`ppt
 
 
 
-
 -- --------------------------------------------------------
 -- -----------------------------------------------------
 -- Table `progress`
@@ -388,8 +397,8 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `progress` (`progress_id`, `engineer_id`, `course_id`, `lesson`) VALUES
-('1 C201-C2', 1, 'C201', 'C201-L1'),
-('1 C204-C2', 1, 'C204', 'C204-L1'),
+('1 C201-C1', 1, 'C201', 'C201-L1'),
+('1 C202-C1', 1, 'C202', 'C202-L1'),
 ('2 C201-C1', 2, 'C201', 'C201-L1'),
 ('2 C204-C2', 2, 'C204', 'C204-L1'),
 ('3 C201-C1', 3, 'C201', 'C201-L1'),
@@ -416,9 +425,9 @@ CREATE TABLE IF NOT EXISTS `enrollment` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-
-
-
+INSERT INTO enrollment (`enrollment_id`, `engineer_id`, `course_id`, `course_class_id`) VALUES
+(1, 1, 'C205', 'C205-C1'),
+(2, 2, 'C105', 'C105-C1');
 
 
 
