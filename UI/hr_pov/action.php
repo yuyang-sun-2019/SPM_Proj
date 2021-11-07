@@ -106,5 +106,19 @@ if($recieved_data -> action == 'reassign_course'){
     echo json_encode($output);}
 
 
+// Update Course Lesson Quiz
+if($recieved_data -> action == 'lesson_quiz'){
+    $query ="
+    UPDATE `course_lesson` SET `quiz_id` = '".$recieved_data->id."' WHERE `course_lesson`.`course_lesson_id` = '".$recieved_data->course_lesson_id."';
+    ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+
+    $output = array(
+        'message' => 'Quiz has been added to the Course Lesson.'
+    );
+    echo json_encode($output);}
+
+
 
 ?>

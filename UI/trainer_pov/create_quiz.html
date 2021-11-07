@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -258,12 +257,13 @@
 
       var quiz_id = course_id + '-' + lesson + '-Quiz'
       var quiz_title = course_id + '-' + lesson
+      var course_lesson_id = course_id + '-' + lesson 
       hour = format_time(hour)
       min = format_time(min)
       sec = format_time(sec)
       var time = hour + ':' + min + ':' + sec
      
-
+      // Create Quiz Details
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -278,9 +278,9 @@
           .then(response => {
             alert('Quiz Description has successfully been added');
             response.json()})
-          
       
-
+      
+      // Create Quiz
       const requestOptions1 = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -318,7 +318,16 @@
             alert('Quiz has successfully been created');
             response.json()})
           
-      
+      // Quiz has been added to the List
+      axios.post('../hr_pov/action.php',{
+        action: 'lesson_quiz',
+        id: quiz_id,
+        course_lesson_id: course_lesson_id
+      }).then(function(response){
+        console.log(response.data)
+        alert(response.data.message)
+        alert('Please refresh the page')
+      })
     }
 
     function format_time(time){
@@ -328,18 +337,10 @@
       return time
     }
 
-
-
-
-    
    
 </script>
 
 
-
-  
-
-  
 
 </body>
 </html>
