@@ -108,14 +108,14 @@
       <a v-bind:href="'./lesson_docx.html?id='+ record" target="_blank" @click="append(record)"><h6 style="font-size:2em; margin-left: 1em;">Click here to download the Document</h6></a>
       <br>
     </div>
-
+    <br>
     <br>
     <h3><strong>Attempt quizzes here {{lesson_id}}</strong></h3>
     <br>
     <div v-for="record in quiz_id">
       <a v-bind:href="'./lesson_quiz.html?id='+ record" @click="append(record)"><h6 style="font-size:2em; margin-left: 1em;">Click here to attempt the quiz</h6></a>
       <br>
-      </div>
+    </div>
 
   </div>
 
@@ -137,6 +137,7 @@
     var lesson_id = getParameterByName('id');
     var engineer_id = sessionStorage.getItem("user_id");
     var course_class = sessionStorage.getItem("course_class");
+
     
     const vm = new Vue({
           el: '#lesson_materials',
@@ -151,7 +152,7 @@
               ppt_materials: [],
               video_materials: [],
               doc_materials: [],
-              quiz_id=[]
+              quiz_id:[]
           },
           mounted: function() {
               axios.get('http://localhost:5001/course_lesson/'+lesson_id)
@@ -222,10 +223,14 @@
                         this.doc_materials = response.data.data['doc_material']
                         var doc_material = array_material(this.doc_materials)
 
+                        // this.quiz_id = response.data.data['quiz_id']
+                        // var quiz_id=array_material(this.quiz_id)
+
                         pdf = array_material(pdf)
                         ppt = array_material(ppt)
                         video = array_material(video)
                         doc = array_material(doc)
+                       
 
                         if(pdf_material.length == pdf.length && ppt_material.length == ppt.length && video_material.length == video.length && doc_material.length == doc.length){
                             
