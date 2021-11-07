@@ -167,6 +167,35 @@ CREATE TABLE `quiz_qn_ans` (
   DEFAULT CHARACTER SET = utf8;
 
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz_take`
+--
+
+CREATE TABLE `quiz_take` (
+  `quiz_take_id` varchar(75) NOT NULL,
+  `quiz_score` varchar(75) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `quiz_take`
+--
+
+INSERT INTO `quiz_take` (`quiz_take_id`, `quiz_score`) VALUES
+('001-C201-L1-Quiz', '2'),
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `quiz_take`
+--
+ALTER TABLE `quiz_take`
+  ADD PRIMARY KEY (`quiz_take_id`),
+  ADD UNIQUE KEY `quiz_take_id` (`quiz_take_id`);
+
 
 -- --------------------------------------------------------
 -- -----------------------------------------------------
