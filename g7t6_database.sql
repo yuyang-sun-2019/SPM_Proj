@@ -397,7 +397,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `progress` (`progress_id`, `engineer_id`, `course_id`, `lesson`) VALUES
-('1 C201-C1', 1, 'C201', 'C201-L1'),
+('1 C201-C2', 1, 'C201', 'C201-L1'),
 ('1 C202-C1', 1, 'C202', 'C202-L1'),
 ('2 C201-C1', 2, 'C201', 'C201-L1'),
 ('2 C204-C2', 2, 'C204', 'C204-L1'),
