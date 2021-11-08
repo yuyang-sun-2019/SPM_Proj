@@ -76,9 +76,7 @@ class Testquiz_qn_ans(unittest.TestCase):
 
         }
         )
-
-
-# Done By Goh Xue Qi
+        
 class TestQuizTake(unittest.TestCase):
     t1 = quiz_take(quiz_take_id='001-C101-L1', quiz_score=2)
     
