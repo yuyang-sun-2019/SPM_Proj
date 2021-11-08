@@ -6,7 +6,7 @@ from Courses import *
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:''' + \
-                                        '@localhost:3306/mydb'
+                                        'spmdb1.c4n4efeq3vyp.us-east-1.rds.amazonaws.com:3306/mydb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100,
                                            'pool_recycle': 280}
