@@ -126,7 +126,7 @@
               eng_list: []
           },
           mounted: function() {
-              axios.get('http://localhost:5003/enrollment')
+              axios.get('http://ec2-54-167-142-167.compute-1.amazonaws.com:5003/enrollment')
                   .then(response => {
                       this.enrollment_list = response.data.data; 
                       for(var i =0; i<this.enrollment_list.length; i++){
