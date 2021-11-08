@@ -220,7 +220,7 @@ class Test_Course(unittest.TestCase):
 
 
 
-# Test if API '/course/course_id' works
+# Test if API '/course_lesson/course_id' works
 class Test_Course(unittest.TestCase):
     # Check if response is 200
     def test_course(self):
