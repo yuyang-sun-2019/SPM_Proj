@@ -92,7 +92,7 @@
             courses_descr: []
         },
         mounted: function() {
-          axios.get('http://localhost:5002/engineer/'+engineer_id)
+          axios.get('http://ec2-54-167-142-167.compute-1.amazonaws.com:5002/engineer/'+engineer_id)
                 .then(response => {
                     this.course_list = response.data.data['engineer_completed_courses'].split(', ');
                     console.log(this.course_list)
