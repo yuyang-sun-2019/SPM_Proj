@@ -24,8 +24,6 @@ class TestQuiz(unittest.TestCase):
         self.assertIn(self.q1.to_dict()['quiz_id'].split('-')[2][0], 'Q')
 
 
-
-###Done by Hp Jing Ling
 ## Test for the presence of quiz_qn_as
 class Testquiz_qn_ans(unittest.TestCase):
     cc1 = quiz_qn_ans(quiz_qn_id='C101-L1-Quiz',  
