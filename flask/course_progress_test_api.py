@@ -42,7 +42,7 @@ class Test_Progress_route(unittest.TestCase):
         self.assertTrue(b'video_material' in data.data)
 
     # Check for Data returned
-    def test_course_details(self):
+    def test_course_progress_details(self):
         test5 = app.test_client(self)
         progress_id = '2 C201-C1'
         data = test5.get("/course_progress/"+progress_id)
