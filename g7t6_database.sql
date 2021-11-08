@@ -246,6 +246,27 @@ INSERT INTO `course_details` (`course_id`,`course_name`,`course_type`, `course_p
 ('C305', 'Event Management & Operations', 'Biddable', NULL, 'This is a biddable course, please refer to OASIS for more information', 'C305-C1', 'C305-L1, C305-L2, C305-L3', '2021-10-25 09:00:00', `start_date` + INTERVAL 4 month);
 
 
+-- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Quiz_table's Table
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `quiz_take` (
+
+  `quiz_take_id` VARCHAR(64) NOT NULL UNIQUE,
+  `quiz_score` INT(20) DEFAULT NULL,
+
+  PRIMARY KEY (`quiz_take_id`))
+
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO quiz_take (`quiz_take_id`, `quiz_score`) VALUES
+('001-C101-L1',2),
+('002-C101-L2',4);
+
+
+
 
 
 -- --------------------------------------------------------
